@@ -1,0 +1,19 @@
+{
+    "emailConf": {
+        "EMAIL_HOST" : "smtp.gmail.com",
+        "EMAIL_HOST_USER" : "noreply.microcomercios@gmail.com",
+        "EMAIL_HOST_PASSWORD" : "wNxS5i1erbotIbnOtsuz",
+        "EMAIL_PORT" : 587
+    },
+    "ngrok": "19a917802b90.ngrok.io",
+    "DEBUG": true,
+    "BD": {
+        "NAME" : "inventario_base",
+        "USER" : "rexy_inicio_user",
+        "PASSWORD" : "jnbhTCXL59fAqVJl5CpR"
+    },
+    "RECAPTCHA": {
+        "PUBLIC" : "6Le3cH8aAAAAALvxDfIdT6xoHik9Sn1Rxvwsn5MF",
+        "PRIVATE" : "6Le3cH8aAAAAAMYRvzxcVtjozuht8gE74FqexRZZ"
+    }
+}
