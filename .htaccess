@@ -1,0 +1,69 @@
+####################################################################
+#  Rexy Studios, 2020                                              #
+#  Archivo de configuración                                        #
+#  NO CAMBIE ESTE ARCHIVO POR RAZONES DE SEGURIDAD Y RENDIMIENTO   #
+#                                                                  #
+####################################################################
+
+<files .htaccess>  
+	order allow,deny  
+	deny from all  
+</files>
+
+<files README.md>  
+	order allow,deny  
+	deny from all  
+</files>
+
+<files .gitignore>  
+	order allow,deny  
+	deny from all  
+</files>
+
+<files manage.py>  
+	order allow,deny  
+	deny from all  
+</files>
+
+<files microcomercios.com.conf>  
+	order allow,deny  
+	deny from all  
+</files>
+
+Order deny,allow
+Allow from all 
+deny from 107.150.37.82
+deny from 107.180.120.41
+deny from 160.153.154.29
+deny from 185.190.16.70
+deny from 92.114.95.70
+deny from 77.55.217.200
+deny from 50.63.196.150
+deny from 160.153.154.6
+deny from 160.153.153.29
+deny from 160.153.156.131
+deny from 187.73.33.43
+deny from 68.66.226.73
+deny from 185.87.123.34
+deny from 107.180.120.57
+deny from 198.71.239.51
+deny from 72.34.61.219
+deny from 50.63.197.101
+deny from 74.85.245.121
+deny from 132.148.82.198
+deny from 91.213.46.98
+deny from 50.62.208.86
+deny from 182.50.130.115
+deny from 85.233.160.31
+deny from 72.167.190.91
+deny from 200.10.96.188
+deny from 178.57.220.93
+deny from 45.118.145.52
+deny from 62.210.27.183
+deny from 128.199.152.0
+deny from 94.177.214.9
+deny from 142.11.213.165
+deny from 139.162.145.250
+deny from 195.37.190.77
+deny from 195.54.160.21
+deny from 192.241.233.64
