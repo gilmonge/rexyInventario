@@ -1,0 +1,32 @@
+{% extends 'registration/base.html' %}
+{% load static %}
+{% load codeBackEnd_extras %}
+{% block title %}Registro{% endblock %}
+{% block content %}
+    <style>
+        .errorlist li{ color:red !important; } 
+        label{ display: none; } 
+        .helptext, ul li{
+            font-size: .95rem;
+            color: #2E5A93;
+        }
+    </style>
+    <div>
+        <!-- Alternative login -->
+    </div>
+{% endblock %}
+
+{% block customScript %}
+    <script>
+        {% if 'error' in request.GET %}
+            swal("¡Ha ocurrido un error!", "Inténtelo de nuevo", {
+                icon : "error",
+                buttons: {
+                    confirm: {
+                        className : 'btn btn-danger'
+                    }
+                },
+            });
+        {% endif %}
+    </script>
+{% endblock %}

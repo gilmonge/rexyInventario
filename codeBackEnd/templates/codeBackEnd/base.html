@@ -1,0 +1,193 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{% block title %}{% endblock %} | Administrador</title>
+        {% block customHead %}{% endblock %}
+
+        <link rel="icon" href="{% static 'codeBackEnd/admin/img/favicon.png' %}" type="image/x-icon"/>
+
+        <!-- Fonts and icons -->
+        <script src="{% static 'codeBackEnd/admin/assets/webfont/webfont.min.js' %}"></script>
+        <script>
+            WebFont.load({
+                google: {"families":["Lato:300,400,700,900"]},
+                custom: {"families":["Flaticon", "Font Awesome 5 Solid", "Font Awesome 5 Regular", "Font Awesome 5 Brands", "simple-line-icons"], 
+                urls: ["{% static 'codeBackEnd/assets/css/fonts.min.css' %}"]},
+                active: function() {
+                    sessionStorage.fonts = true;
+                }
+            });
+        </script>
+
+        <!-- CSS Files -->
+        <link rel="stylesheet" href="{% static 'codeBackEnd/admin/assets/bootstrap/bootstrap.min.css' %}">
+        <link rel="stylesheet" href="{% static 'codeBackEnd/admin/assets/atlantis/atlantis.min.css' %}">
+
+        <!-- Bootstrap File Input -->
+        <link href="{% static 'codeBackEnd/admin/assets/bootstrap-fileinput/css/fileinput.css' %}" media="all" rel="stylesheet" type="text/css"/>
+        <link href="{% static 'codeBackEnd/admin/assets/bootstrap-fileinput/themes/explorer-fas/theme.css' %}" media="all" rel="stylesheet" type="text/css"/>
+        
+        <!-- Formvalidation -->
+        <link rel="stylesheet" href="{% static 'codeBackEnd/admin/assets/formvalidation-v1.5.0/dist/css/formValidation.min.css' %}">
+        
+        <!-- Owl carousel -->
+        <link rel="stylesheet" href="{% static 'codeBackEnd/assets/libs/owl/owl.carousel.min.css' %}">
+        <link rel="stylesheet" href="{% static 'codeBackEnd/assets/libs/owl/owl.theme.default.min.css' %}">
+
+        <!-- bootstrap-select -->
+        <link rel="stylesheet" href="{% static 'codeBackEnd/assets/libs/bootstrap-select/bootstrap-select.min.css' %}">
+        
+        <!-- Rexy -->
+        <link rel="stylesheet" href="{% static 'codeBackEnd/admin/assets/rexy/rexy.css' %}">
+
+        <style>
+            .errorlist {
+                padding: 0 !important;
+            }
+            .errorlist li {
+                color: #fff !important;
+                background-color: #dc3545;
+                list-style: none;
+                padding: .25em .4em;
+                border-radius: .25rem;
+                margin-bottom: 5px;
+            }
+        </style>
+
+        {% block customCss %}{% endblock %}
+
+    </head>
+    <body data-background-color="dark">
+        <div class="wrapper sidebar_minimize">
+            
+            {% include 'codeBackEnd/estructura/navbar.html' %}
+
+            {% include 'codeBackEnd/estructura/sidebar.html' %}
+
+            <div class="main-panel">
+                <div class="content">
+                    <div class="panel-header bg-primary-gradient">
+                        <div class="page-inner py-5">
+                            <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row">
+                                <div>
+                                    <h2 class="text-white pb-2 fw-bold">{% block tituloSeccion %}{% endblock %}</h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="page-inner mt--5">
+                        <div class="row mt--2">
+
+                            <div class="col-md-12">
+
+                                <div class="col-md-12">
+                                    <div class="card col-md-12">
+                                        <div class="card-body col-md-12 ">
+                                            {% block content %}{% endblock %}
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+
+                {% include 'codeBackEnd/estructura/footer.html' %}
+
+            </div>
+        </div>
+
+        <div class="modal fade" id="Modal_informacion" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="Modal_informacion" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-body" id="msgInfo">
+                        ...
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-info" data-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Font Awesome -->
+        <script src="https://kit.fontawesome.com/5f3aa13048.js"></script>
+
+        <!--   Core JS Files   -->
+        <script src="{% static 'codeBackEnd/admin/assets/jquery/jquery.3.2.1.min.js' %}"></script>
+        <script src="{% static 'codeBackEnd/admin/assets/popper/popper.min.js' %}"></script>
+        <script src="{% static 'codeBackEnd/admin/assets/bootstrap/bootstrap.min.js' %}"></script>
+
+        <!-- jQuery UI -->
+        <script src="{% static 'codeBackEnd/admin/assets/jquery-ui/jquery-ui.min.js' %}"></script>
+        <script src="{% static 'codeBackEnd/admin/assets/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js' %}"></script>
+
+        <!-- Owl -->
+        <script src="{% static 'codeBackEnd/assets/libs/owl/owl.carousel.min.js' %}"></script>
+
+        <!-- bootstrap-select -->
+        <script src="{% static 'codeBackEnd/assets/libs/bootstrap-select/bootstrap-select.min.js' %}"></script>
+
+        <!-- jQuery Scrollbar -->
+        <script src="{% static 'codeBackEnd/admin/assets/jquery-scrollbar/jquery.scrollbar.min.js' %}"></script>
+
+        <!-- Chart JS -->
+        <script src="{% static 'codeBackEnd/admin/assets/chart.js/chart.min.js' %}"></script>
+
+        <!-- jQuery Sparkline -->
+        <script src="{% static 'codeBackEnd/admin/assets/jquery.sparkline/jquery.sparkline.min.js' %}"></script>
+
+        <!-- Chart Circle -->
+        <script src="{% static 'codeBackEnd/admin/assets/chart-circle/circles.min.js' %}"></script>
+
+        <!-- Datatables -->
+        <script src="{% static 'codeBackEnd/admin/assets/datatables/datatables.min.js' %}"></script>
+
+        <!-- Bootstrap Notify -->
+        <script src="{% static 'codeBackEnd/admin/assets/bootstrap-notify/bootstrap-notify.min.js' %}"></script>
+
+        <!-- jQuery Vector Maps -->
+        <script src="{% static 'codeBackEnd/admin/assets/jqvmap/jquery.vmap.min.js' %}"></script>
+        <script src="{% static 'codeBackEnd/admin/assets/jqvmap/maps/jquery.vmap.world.js' %}"></script>
+
+        <!-- Tiny editor -->
+        <script src="{% static 'codeBackEnd/admin/assets/tinymce-4.7.6/tinymce.min.js' %}"></script>
+
+        <!-- bootstrap File Input -->
+        <script src="{% static 'codeBackEnd/admin/assets/bootstrap-fileinput/js/plugins/sortable.js' %}" type="text/javascript"></script>
+        <script src="{% static 'codeBackEnd/admin/assets/bootstrap-fileinput/js/fileinput.js' %}" type="text/javascript"></script>
+        <script src="{% static 'codeBackEnd/admin/assets/bootstrap-fileinput/js/locales/es.js' %}" type="text/javascript"></script>
+        <script src="{% static 'codeBackEnd/admin/assets/bootstrap-fileinput/themes/fas/theme.js' %}" type="text/javascript"></script>
+        <script src="{% static 'codeBackEnd/admin/assets/bootstrap-fileinput/themes/explorer-fas/theme.js' %}" type="text/javascript"></script>
+        
+        <!-- Formvalidation -->
+        <script src="{% static 'codeBackEnd/admin/assets/formvalidation-v1.5.0/dist/js/FormValidation.min.js' %}"></script>
+        <script src="{% static 'codeBackEnd/admin/assets/formvalidation-v1.5.0/dist/js/plugins/Bootstrap.min.js' %}"></script>
+
+        <!-- Sweet Alert -->
+        <script src="{% static 'codeBackEnd/admin/assets/sweetalert/sweetalert.min.js' %}"></script>
+
+        <!-- Atlantis JS -->
+        <script src="{% static 'codeBackEnd/admin/assets/atlantis/atlantis.min.js' %}"></script>
+
+        <!-- Rexy -->
+        <script src="{% static 'codeBackEnd/admin/assets/rexy/rexy.js' %}"></script>
+
+        {% block customJs %}{% endblock %}
+
+        <script>
+            $('#button').click(function () { $.ajax({ type: 'POST' }); /* arregla error de no submit */ });
+
+            if ( navigator.serviceWorker ) {
+                navigator.serviceWorker.register("{% static 'codeBackEnd/admin/assets/rexy/swcodeBackEnd.js' %}");
+            }
+        </script>
+        
+    </body>
+</html>

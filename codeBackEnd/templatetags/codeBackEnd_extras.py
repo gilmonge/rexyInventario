@@ -1,0 +1,29 @@
+from random import randint
+from django import template
+
+register = template.Library()
+
+@register.simple_tag
+def get_colorRandom():
+    colores = [
+        "#177DFF",
+        "#FFFFFF",
+        "#436FB8",
+        "#C7C7C7",
+        "#F17073",
+        "#F14B4F",
+        "#CAC73F",
+        "#F1ED4B",
+        "#C73FCA",
+        "#7ECA7C",
+        "#94F1EE",
+    ]
+    colorSeleccionado = randint(0, len(colores)-1)
+
+    return colores[colorSeleccionado]
+
+@register.simple_tag
+def get_reCAPTCHA_PUBLIC():
+    from django.conf import settings
+    
+    return settings.RECAPTCHA_PUBLIC

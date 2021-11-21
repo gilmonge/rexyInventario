@@ -1,0 +1,75 @@
+{% extends 'registration/base.html' %}
+{% load static %}
+{% load codeBackEnd_extras %}
+{% block title %}Login{% endblock %}
+{% block content %}
+    <div>
+        <div class="mb-3">
+            <h6 class="h3 mb-1">¡Bienvenido!</h6>
+            <p class="text-muted mb-0">
+                Ingresa para disfrutar.
+            </p>
+        </div>
+        <form action="{% url 'codeBackEnd:onLogin' %}" method="post">
+            {% csrf_token %}
+            {% if form.non_field_errors %}
+                <div class="form-group">
+                    <div class="alert alert-danger" role="alert">
+                        Usuario o contraseña incorrectos, prueba de nuevo.
+                    </div>
+                </div>
+            {% endif %}
+            <div class="form-group">
+                <label class="form-control-label">Usuario</label>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fas fa-user-tie"></i></span>
+                    </div>
+                    <input type="text" class="form-control" name="username" id="username" placeholder="Usuario" autocomplete="off">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div>
+                        <label class="form-control-label">Contraseña</label>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fas fa-key"></i></span>
+                    </div>
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Contraseña" autocomplete="off">
+                </div>
+            </div>
+            <div class="form-group d-flex justify-content-center">
+                {% get_reCAPTCHA_PUBLIC as KEY %}
+                <div class="g-recaptcha" data-sitekey="{{KEY}}"></div>
+            </div>
+            <button type="submit" class="btn btn-block btn-dark">Ingresar</button>
+
+            <div class="row mt-3">
+                <div class="col-sm-6">
+                    <a href="{% url "password_reset" %}" type="button" class="btn btn-block btn-outline-dark">¿Olvidaste la contraseña?<br/> ¡Recupérala!</a>
+                </div>
+            </div>
+
+            <input type="hidden" name="formaction" value="login">
+        </form>
+        <!-- Alternative login -->
+    </div>
+{% endblock %}
+
+{% block customScript %}
+    <script>
+        {% if 'error' in request.GET %}
+            swal("¡Ha ocurrido un error!", "Inténtelo de nuevo", {
+                icon : "error",
+                buttons: {
+                    confirm: {
+                        className : 'btn btn-danger'
+                    }
+                },
+            });
+        {% endif %}
+    </script>
+{% endblock %}

@@ -1,0 +1,95 @@
+/* Personalizacion de la plantilla */
+    .navbar-header[data-background-color=dark] {
+        background: #001737 !important;
+    }
+
+    .sidebar[data-background-color=dark2] {
+        background: #002A61 !important;
+    }
+
+    .logo-header[data-background-color=dark2] {
+        background: #003B87 !important;
+    }
+
+    body[data-background-color=dark] {
+        background: #001027;
+    }
+
+    .main-panel>.content {
+        padding: 0!important;
+        min-height: calc(100% - 114px);
+        margin-top: 62px;
+        overflow: hidden;
+    }
+    
+    body[data-background-color=dark] .footer {
+        border-top: 1px solid #FFD92E;
+        background: #001737;
+    }
+
+    body[data-background-color=dark] .card, body[data-background-color=dark] .list-group-item, body[data-background-color=dark] .row-card-no-pd, body[data-background-color=dark] .timeline>li>.timeline-panel {
+        background: #002A61;
+    }
+
+    body[data-background-color=dark] .form-control, body[data-background-color=dark] .form-group-default, body[data-background-color=dark] .select2-container--bootstrap .select2-selection {
+        background-color: #001737;
+        color: #fff;
+        border-color: #003B87;
+    }
+
+    .sidebar .nav>.nav-item a i, .sidebar[data-background-color=white] .nav>.nav-item a i,
+    .sidebar.sidebar-style-2[data-background-color=dark2] .nav .nav-item a:hover i {
+        color: #ffffff !important;
+    }
+    .sidebar .nav>.nav-item a p, .sidebar[data-background-color=white] .nav>.nav-item a p,
+    .sidebar.sidebar-style-2[data-background-color=dark2] .nav .nav-item a:hover p {
+        color: #ffffff !important;
+    }
+
+    .form-control:disabled, .form-control[readonly] {
+        background-color: #001737!important;
+        border-color: #e8e8e8!important;
+    }
+
+    .sidebar .nav>.nav-item a i, .sidebar[data-background-color=white] .nav>.nav-item a i ,
+    .sidebar .nav>.nav-item a svg, .sidebar[data-background-color=white] .nav>.nav-item a svg ,
+    .sidebar .nav>.nav-item a img, .sidebar[data-background-color=white] .nav>.nav-item a img {
+        color: #8d9498 !important;
+        margin-right: 0px !important;
+        width: 25px !important;
+        text-align: center !important;
+        vertical-align: middle !important;
+        float: left !important;
+        font-size: 18px !important;
+        line-height: 30px !important;
+    }
+
+    .sidebar .nav>.nav-item a p{
+        font-size: 14px !important;
+        margin-bottom: 0 !important;
+        margin-right: 5px !important;
+        white-space: nowrap !important;
+        color: #8d9498 !important;
+        margin-left: 5px !important;
+    }
+
+    .messages-notif-box .notif-center a .notif-icon.notif-primary, .notif-box .notif-center a .notif-icon.notif-primary {
+        background: #002A61!important;
+    }
+
+    .fv-plugins-bootstrap .fv-help-block {
+        font-size: 13px;
+        margin-top: .25rem;
+        color: #fff !important;
+        background-color: #dc3545;
+        list-style: none;
+        padding: .25em .4em;
+        border-radius: .25rem;
+        margin-bottom: 5px;
+    }
+    .fv-plugins-bootstrap .fv-plugins-icon {
+        height: 38px;
+        line-height: 54px;
+        width: 50px;
+    }
+/* Personalizacion de la plantilla */

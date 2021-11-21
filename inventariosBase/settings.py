@@ -36,6 +36,7 @@ if DEBUG:
 # Application definition
 
 INSTALLED_APPS = [
+    'codeBackEnd',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
