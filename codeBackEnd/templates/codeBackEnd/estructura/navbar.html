@@ -1,6 +1,6 @@
+{% load codeBackEnd_extras %}
 {% load static %}
             <div class="main-header">
-            
                 <!-- Logo Header -->
                 <div class="logo-header" data-background-color="dark2">
                     <a href="/" class="logo">
@@ -24,7 +24,10 @@
                 <nav class="navbar navbar-header navbar-expand-lg" data-background-color="dark">
                     <div class="container-fluid">
                         <div class="collapse" id="search-nav">
-                            <h1 style="color: #fff;">Inventarios</h1>
+                            <h1 style="color: #fff;">
+                                {% NombreEmpresa as nombre_empresa %}
+                                {{ nombre_empresa }}
+                            </h1>
                         </div>
 
                         <ul class="navbar-nav topbar-nav ml-md-auto align-items-center">

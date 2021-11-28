@@ -1,5 +1,6 @@
 from random import randint
 from django import template
+from codeBackEnd.models import Parametro
 
 register = template.Library()
 
@@ -19,11 +20,13 @@ def get_colorRandom():
         "#94F1EE",
     ]
     colorSeleccionado = randint(0, len(colores)-1)
-
     return colores[colorSeleccionado]
 
 @register.simple_tag
 def get_reCAPTCHA_PUBLIC():
     from django.conf import settings
-    
     return settings.RECAPTCHA_PUBLIC
+
+@register.simple_tag
+def NombreEmpresa():
+    return Parametro.objects.filter(parametro="Empresa")[0].valor
