@@ -66,17 +66,17 @@ def Search(request):
     filtrocodigo = request.GET.get('codigoProduto', '0')
 
     # trae los productos relacionados al comercio
-    productos_list = []
+    filtro_list = []
 
     if filtroNombre != '' and filtroNombre != None:
-        productos_list = Productos.objects.filter(nombre__icontains=filtroNombre)
+        filtro_list = Productos.objects.filter(nombre__icontains=filtroNombre)
     elif filtrocodigo != '' and filtrocodigo != None:
-        productos_list = Productos.objects.filter(codigoProduto__icontains=filtrocodigo)
+        filtro_list = Productos.objects.filter(codigoProduto__icontains=filtrocodigo)
     else:
         return reverse_lazy('Inventarios:Base')
 
     page = request.GET.get('page', 1)
-    paginator = Paginator(productos_list, 30)
+    paginator = Paginator(filtro_list, 30)
 
     try:
         productos = paginator.page(page)
