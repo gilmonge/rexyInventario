@@ -53,13 +53,13 @@
                                 <h4 class="text-section text-white">Opciones</h4>
                             </li>
 
+                            <li class="nav-item">
+                                <a href="{% url 'Inventarios:Base' %}">
+                                    <img src="{% static 'codeBackEnd/admin/img/png/box.png' %}">
+                                    <p>Productos</p>
+                                </a>
+                            </li>
                             {% if request.session.comercioId is not None %}
-                                <li class="nav-item">
-                                    <a href="{% url 'comercioAdmin:comercio' %}">
-                                        <img src="{% static 'codeBackEnd/admin/img/svg/comercio.svg' %}">
-                                        <p>Comercio</p>
-                                    </a>
-                                </li>
 
                                 <li class="nav-item">
                                     <a href="{% url 'comercioAdmin:catalogo' %}">

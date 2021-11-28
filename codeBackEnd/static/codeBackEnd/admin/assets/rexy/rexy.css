@@ -92,4 +92,127 @@
         line-height: 54px;
         width: 50px;
     }
+
+    .img-titulo {
+        width: 50px;
+        margin-left: 20px;
+        margin-right: 20px;
+    }
+
+    a i, button i {
+        margin-right: 6px;
+    }
+
+    .btn {
+        padding: .50rem .70rem;
+    }
 /* Personalizacion de la plantilla */
+
+/* Tablas personalizadas */
+    thead{ background: #001027; }
+    thead tr th{ color: #ffffff; }
+
+    tbody{ background: #003B87; }
+    tbody:hover{ background: #003B87; }
+    tbody tr:hover{ background: #002659 !important; }
+    tbody tr td{ color: #ffffff; }
+    tbody tr td a{ color: #5C9FF1; padding-left: 10px; }
+
+    .pagination li a, .pagination li:first-child a, .pagination li:last-child a{
+        background: #003880;
+        color: #fff;
+        border: 1px solid #003880;
+    }
+
+    .pagination li a:hover, .pagination li:first-child a:hover, .pagination li:last-child a:hover, .page-selected{
+        background: #001027;
+        color: #fff;
+        border: 1px solid #fff;
+    }
+
+    .page-selected{
+        background: #001027 !important;
+        color: #fff !important;
+        border: 1px solid #fff !important;
+    }
+/* Tablas personalizadas */
+
+/* modal personalizado */
+    .modal-content {
+        background-color: #003880;
+    }
+    .modal-footer {
+        border-top: 1px solid #FFD92E;
+    }
+/* modal personalizado */
+
+/* mensajes personalizados */
+    .estado .alert{
+        background-color: rgba(255,255,255,.05);
+        margin-top: 10px;
+        padding: .8rem .5rem;
+        color: #fff;
+        font-size: 1.1rem;
+    }
+    .card-info-custom {
+        background: rgba(255,255,255,0.1) !important;
+        overflow: hidden !important;
+    }
+    .estado-producto .alert{
+        background-color: rgba(255,255,255,.05);
+        margin-top: 0px;
+        padding: 1.2rem 1.3rem;
+        color: #fff;
+        font-size: .8rem;
+    }
+
+    .btn-eliminar-producto{
+        color: #fff;
+        padding: .4rem 0.6rem;
+        margin-bottom: 5px;
+        font-size: 0.85rem;
+    }
+
+    .acceso-producto, .acceso-producto:focus {
+        color: #fff;
+        text-decoration: none;
+    }
+
+    .acceso-producto:hover{
+        cursor: pointer;
+        color: #fff;
+        text-decoration: none;
+    }
+
+    .labelEditar, .labelEditar:focus{
+        position: absolute;
+        bottom: 0px;
+        right: 0px;
+        background: rgba(0,0,0,0.5);
+        width: 100%;
+        text-align: right;
+        padding-right: 8px;
+        color: #fff;
+        height: 100%;
+    }
+
+    .labelEditar:hover{
+        cursor: pointer;
+        position: absolute;
+        bottom: 0px;
+        right: 0px;
+        background: rgba(0,0,0,0.8);
+        width: 100%;
+        text-align: right;
+        padding-right: 8px;
+        color: #fff;
+        height: 100%;
+        text-decoration: none;
+    }
+
+    .limite{
+        background-color: rgba(255,255,255,.05);
+        color: #fff;
+        font-size: 1.1rem;
+    }
+/* mensajes personalizados */

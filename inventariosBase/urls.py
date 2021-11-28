@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import path, include
 
 from codeBackEnd.urls import codeBackEnd_patterns
+from inventarios.urls import inventarios_patterns
 
 urlpatterns = [
     path('DJAdmin/', admin.site.urls),
@@ -26,4 +27,5 @@ urlpatterns = [
 
     # Paths de Admin
     path('', include(codeBackEnd_patterns)),
+    path('inventarios/', include(inventarios_patterns)),
 ]
