@@ -4,7 +4,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.urls import reverse_lazy, reverse
 from .models import Productos
-from .forms import ProductosForm, ProductosFormEdit
+from .forms import BaseForm, FormEdit
 
 # Create your views here.
 class baseListView(ListView):
@@ -33,7 +33,7 @@ class DeleteView(DeleteView):
 
 class CreateView(CreateView):
     model = Productos
-    form_class = ProductosForm
+    form_class = BaseForm
     template_name = 'inventarios/Add.html'
     
     def dispatch(self, request, *args, **kwargs):
@@ -48,7 +48,7 @@ class CreateView(CreateView):
 
 class UpdateView(UpdateView):
     model = Productos
-    form_class = ProductosFormEdit
+    form_class = FormEdit
     template_name = 'inventarios/Edit.html'
     # exclude = ('cantidad',)
     

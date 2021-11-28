@@ -1,7 +1,7 @@
 from django import forms
 from inventarios.models import Productos
 
-class ProductosForm(forms.ModelForm):
+class BaseForm(forms.ModelForm):
     class Meta:
         model = Productos
         fields = [
@@ -18,7 +18,7 @@ class ProductosForm(forms.ModelForm):
             'descripcion'   : forms.Textarea(attrs={'class': 'form-control' , 'placeholder': 'Descripción', 'required': 'true'}),
         }
 
-class ProductosFormEdit(forms.ModelForm):
+class FormEdit(forms.ModelForm):
     class Meta:
         model = Productos
         fields = [
