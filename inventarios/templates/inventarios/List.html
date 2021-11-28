@@ -155,7 +155,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-body">
-                    <form action="{% url 'Inventarios:Search' %}" id="formInventarioSearchName" method="get" enctype="multipart/form-data" class="row ">
+                    <form action="{% url 'Inventarios:Search' %}" id="formSearchName" method="get" enctype="multipart/form-data" class="row ">
                         <div class="form-group col-md-12"> {% comment %} nombre {% endcomment %}
                             <label for="id_nombre">Nombre:</label>
                             {% if 'nombre' in request.GET %}
@@ -171,7 +171,7 @@
                         </div>
                     </form>
 
-                    <form action="{% url 'Inventarios:Search' %}" id="formInventarioSearchCode" method="get" enctype="multipart/form-data" class="row ">
+                    <form action="{% url 'Inventarios:Search' %}" id="formSearchCode" method="get" enctype="multipart/form-data" class="row ">
                         <div class="form-group col-md-12"> {% comment %} codigoProduto {% endcomment %}
                             <label for="id_nombre">Código del producto:</label>
                             {% if 'codigoProduto' in request.GET %}

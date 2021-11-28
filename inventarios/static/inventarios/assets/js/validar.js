@@ -51,10 +51,10 @@ let validaDescripcion = {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    /* formInventarioAdd*/
-    if ( document.getElementById( "formInventarioAdd" )) {
+    /* formAdd*/
+    if ( document.getElementById( "formAdd" )) {
         FormValidation.formValidation(
-            document.getElementById('formInventarioAdd'),
+            document.getElementById('formAdd'),
             {
                 fields: {
                     nombre: validaNombre,
@@ -76,12 +76,12 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         );
     }
-    /* formInventarioAdd*/
+    /* formAdd*/
 
-    /* formInventarioEdit*/
-    if ( document.getElementById( "formInventarioEdit" )) {
+    /* formEdit*/
+    if ( document.getElementById( "formEdit" )) {
         FormValidation.formValidation(
-            document.getElementById('formInventarioEdit'),
+            document.getElementById('formEdit'),
             {
                 fields: {
                     nombre: validaNombre,
@@ -102,12 +102,12 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         );
     }
-    /* formInventarioEdit*/
+    /* formEdit*/
 
-    /* formInventarioSearchName*/
-    if ( document.getElementById( "formInventarioSearchName" )) {
+    /* formSearchName*/
+    if ( document.getElementById( "formSearchName" )) {
         FormValidation.formValidation(
-            document.getElementById('formInventarioSearchName'),
+            document.getElementById('formSearchName'),
             {
                 fields: {
                     nombre: validaNombre,
@@ -126,12 +126,12 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         );
     }
-    /* formInventarioSearchName*/
+    /* formSearchName*/
 
-    /* formInventarioSearchCode*/
-    if ( document.getElementById( "formInventarioSearchCode" )) {
+    /* formSearchCode*/
+    if ( document.getElementById( "formSearchCode" )) {
         FormValidation.formValidation(
-            document.getElementById('formInventarioSearchCode'),
+            document.getElementById('formSearchCode'),
             {
                 fields: {
                     codigoProduto: validaCodigoProduto,
@@ -150,5 +150,5 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         );
     }
-    /* formInventarioSearchCode*/
+    /* formSearchCode*/
 });
