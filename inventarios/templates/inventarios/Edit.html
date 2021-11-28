@@ -1,18 +1,15 @@
 {% extends 'codeBackEnd/base.html' %}
 {% load static %}
-{% block title %}Nuevo producto{% endblock %}
-{% block tituloSeccion %}<img class="img-titulo" src="{% static 'codeBackEnd/admin/img/png/box.png' %}"> Nuevo producto{% endblock %}
-
-{% block customHead %}
-    <link href="{% static 'codeBackEnd/admin/assets/dataTables/css/dataTables.bootstrap4.css' %}" rel="stylesheet"  type="text/css"/>
-{% endblock %}
+{% block title %}Editar producto{% endblock %}
+{% block tituloSeccion %}<img class="img-titulo" src="{% static 'codeBackEnd/admin/img/png/box.png' %}"> Editar producto{% endblock %}
 
 {% block customCss %}
-    <style></style>
+    <style>
+    </style>
 {% endblock %}
 
 {% block content %}
-    <form action="" id="formInventarioAdd" method="post" enctype="multipart/form-data" class="row ">
+    <form action="" id="formInventarioEdit" method="post" enctype="multipart/form-data" class="row ">
         {% csrf_token %}
 
         <div class="form-group col-md-6"> {% comment %} nombre {% endcomment %}
@@ -21,13 +18,7 @@
             {{ form.nombre.errors }}
         </div>
 
-        <div class="form-group col-md-3"> {% comment %} cantidad {% endcomment %}
-            {{ form.cantidad.label_tag }}
-            {{ form.cantidad }}
-            {{ form.cantidad.errors }}
-        </div>
-
-        <div class="form-group col-md-3"> {% comment %} codigoProduto {% endcomment %}
+        <div class="form-group col-md-6"> {% comment %} codigoProduto {% endcomment %}
             {{ form.codigoProduto.label_tag }}
             {{ form.codigoProduto }}
             {{ form.codigoProduto.errors }}
@@ -42,26 +33,37 @@
         <div class="form-group col-md-12 pr-0">
             <div class="row col-md-12 pr-0">
                 <div class="text-center col-12 order-2 text-sm-left order-sm-1 col-sm-6 p-sm-0">
-                    <a href="{% url 'Inventarios:Base' %}" type="button" class="btn btn-info"><i class="fas fa-chevron-left"></i> Volver al listado</a>
+                    <a href="{% url 'Inventarios:Base' %}" type="button" class="btn btn-light"><i class="fas fa-chevron-left"></i> Volver al listado</a>
                 </div>
                 <div class="text-center col-12 mb-2 order-1 text-sm-right order-sm-2 mb-sm-0 col-sm-6 p-sm-0">
                     <button type="submit" class="btn btn-light">
-                        <i class="far fa-save"></i> Guardar producto
+                        <i class="far fa-save"></i> Guardar cambios
                     </button>
                 </div>
             </div>
         </div>
     </form>
+
 {% endblock %}
 
 {% block customJs %}
     <script src="{% static 'inventarios/assets/js/validar.js' %}"></script>
     <script>
-        {% if 'ok' in request.GET %}
-            $("#msgInfo").html(`
-                <p style="color: #212529; font-size: 1.4rem;">Se ha actualizado el comercio correctamente</p>
-            `)
-            $("#Modal_informacion").modal("show")
+        {% if 'updated' in request.GET %}
+            swal({
+                title: "Realizado",
+                text: "Se ha actualizado el producto",
+                icon: "success",
+                buttons: {
+                    confirm: {
+                        text: "OK",
+                        value: true,
+                        visible: true,
+                        className: "btn btn-success",
+                        closeModal: true
+                    }
+                }
+            });
         {% endif %}
     </script>
 {% endblock %}

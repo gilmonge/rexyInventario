@@ -30,3 +30,11 @@ def get_reCAPTCHA_PUBLIC():
 @register.simple_tag
 def NombreEmpresa():
     return Parametro.objects.filter(parametro="Empresa")[0].valor
+
+@register.filter()
+def to_int(value):
+    if value is None:
+        return int(1)
+    if value is '':
+        return int(1)
+    return int(value)

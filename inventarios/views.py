@@ -9,7 +9,7 @@ from .forms import ProductosForm, ProductosFormEdit
 # Create your views here.
 class baseListView(ListView):
     model = Productos
-    template_name = 'inventarios/productos.html'
+    template_name = 'inventarios/List.html'
     paginate_by = 30
 
     ordering = ['-nombre']
@@ -22,7 +22,7 @@ class baseListView(ListView):
 
 class DeleteView(DeleteView):
     model = Productos
-    template_name = 'inventarios/productoDel.html'
+    template_name = 'inventarios/Del.html'
     success_url = reverse_lazy('Inventarios:Base')
 
     def dispatch(self, request, *args, **kwargs):
@@ -34,7 +34,7 @@ class DeleteView(DeleteView):
 class CreateView(CreateView):
     model = Productos
     form_class = ProductosForm
-    template_name = 'inventarios/productoAdd.html'
+    template_name = 'inventarios/Add.html'
     
     def dispatch(self, request, *args, **kwargs):
         if self.request.user.is_authenticated == False:
@@ -49,7 +49,7 @@ class CreateView(CreateView):
 class UpdateView(UpdateView):
     model = Productos
     form_class = ProductosFormEdit
-    template_name = 'inventarios/productoEdit.html'
+    template_name = 'inventarios/Edit.html'
     # exclude = ('cantidad',)
     
     def dispatch(self, request, *args, **kwargs):
@@ -90,4 +90,4 @@ def Search(request):
         'page_obj': productos,
     }
 
-    return render(request, "inventarios/productos.html", datos)
+    return render(request, "inventarios/List.html", datos)
