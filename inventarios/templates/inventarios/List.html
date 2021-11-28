@@ -62,14 +62,14 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for producto in page_obj %}
+                    {% for linea in page_obj %}
                         <tr>
-                            <td style="text-align: center;">{{ producto.nombre }}</td>
-                            <td style="text-align: center;">{{ producto.codigoProduto }}</td>
-                            <td style="text-align: center;">{{ producto.cantidad }}</td>
-                            <td>{{ producto.descripcion }}</td>
-                            <td style="text-align: center;"><a href="{% url 'Inventarios:Edit' pk=producto.id %}" class="btn btn-primary"><i class="fas fa-pencil-alt fa-lg"></i> Editar</a></td>
-                            {% comment %} <td style="text-align: center;"><a href="{% url 'Inventarios:Delete' pk=producto.id %}" class="btn btn-danger"><i class="far fa-trash-alt"></i> Borrar</a></td> {% endcomment %}
+                            <td style="text-align: center;">{{ linea.nombre }}</td>
+                            <td style="text-align: center;">{{ linea.codigoProduto }}</td>
+                            <td style="text-align: center;">{{ linea.cantidad }}</td>
+                            <td>{{ linea.descripcion }}</td>
+                            <td style="text-align: center;"><a href="{% url 'Inventarios:Edit' pk=linea.id %}" class="btn btn-primary"><i class="fas fa-pencil-alt fa-lg"></i> Editar</a></td>
+                            {% comment %} <td style="text-align: center;"><a href="{% url 'Inventarios:Delete' pk=linea.id %}" class="btn btn-danger"><i class="far fa-trash-alt"></i> Borrar</a></td> {% endcomment %}
                         </tr>
                     {% endfor%}
                 </tbody>
