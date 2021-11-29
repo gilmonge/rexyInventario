@@ -1,0 +1,81 @@
+{% extends 'codeBackEnd/base.html' %}
+{% load static %}
+{% load bodegas_extras %}
+{% block title %}Editar bodega{% endblock %}
+{% block tituloSeccion %}<img class="img-titulo" src="{% static 'codeBackEnd/admin/img/png/inventory.png' %}"> Editar bodega{% endblock %}
+
+{% block customCss %}
+    <style>
+    </style>
+{% endblock %}
+
+{% block content %}
+    <form action="" id="formEdit" method="post" enctype="multipart/form-data" class="row ">
+        {% csrf_token %}
+
+        <div class="form-group col-md-6"> {% comment %} nombre {% endcomment %}
+            {{ form.nombre.label_tag }}
+            {{ form.nombre }}
+            {{ form.nombre.errors }}
+        </div>
+
+        <div class="form-group col-md-6"> {% comment %} responsable {% endcomment %}
+            {{ form.responsable.label_tag }}
+            <div class="selectgroup w-100">
+                <select id="id_responsable" name="responsable" class="selectpicker w-100" data-live-search="true">
+                    {% get_Usuarios_list as usuarios %}
+                    {% for usuario in usuarios %}
+                        {% if usuario.id == form.responsable.value %}
+                            <option value="{{ usuario.id }}" selected>{{ usuario.first_name }} {{ usuario.last_name }}</option>
+                        {% else %}
+                            <option value="{{ usuario.id }}">{{ usuario.first_name }} {{ usuario.last_name }}</option>
+                        {% endif %}
+                    {% endfor%}
+                </select>
+            </div>
+            {{ form.responsable.errors }}
+        </div>
+
+        <div class="form-group col-md-12"> {% comment %} observacion {% endcomment %}
+            {{ form.observacion.label_tag }}
+            {{ form.observacion }}
+            {{ form.observacion.errors }}
+        </div>
+
+        <div class="form-group col-md-12 pr-0">
+            <div class="row col-md-12 pr-0">
+                <div class="text-center col-12 order-2 text-sm-left order-sm-1 col-sm-6 p-sm-0">
+                    <a href="{% url 'Bodegas:Base' %}" type="button" class="btn btn-light"><i class="fas fa-chevron-left"></i> Volver al listado</a>
+                </div>
+                <div class="text-center col-12 mb-2 order-1 text-sm-right order-sm-2 mb-sm-0 col-sm-6 p-sm-0">
+                    <button type="submit" class="btn btn-light">
+                        <i class="far fa-save"></i> Guardar cambios
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+
+{% endblock %}
+
+{% block customJs %}
+    <script src="{% static 'bodegas/assets/js/validar.js' %}"></script>
+    <script>
+        {% if 'updated' in request.GET %}
+            swal({
+                title: "Realizado",
+                text: "Se ha actualizado la categoría",
+                icon: "success",
+                buttons: {
+                    confirm: {
+                        text: "OK",
+                        value: true,
+                        visible: true,
+                        className: "btn btn-success",
+                        closeModal: true
+                    }
+                }
+            });
+        {% endif %}
+    </script>
+{% endblock %}

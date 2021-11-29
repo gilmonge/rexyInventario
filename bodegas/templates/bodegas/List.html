@@ -1,10 +1,10 @@
 {% extends 'codeBackEnd/base.html' %}
 {% load humanize %}
 {% load static %}
-{% load inventarios_extras %}
+{% load bodegas_extras %}
 {% load codeBackEnd_extras %}
-{% block title %}Productos {{ comercio.nombre }}{% endblock %}
-{% block tituloSeccion %}<img class="img-titulo" src="{% static 'codeBackEnd/admin/img/png/box.png' %}"> Productos disponibles{% endblock %}
+{% block title %}Bodegas {{ comercio.nombre }}{% endblock %}
+{% block tituloSeccion %}<img class="img-titulo" src="{% static 'codeBackEnd/admin/img/png/inventory.png' %}"> Bodegas disponibles{% endblock %}
 
 {% block customHead %}
     <link href="{% static 'codeBackEnd/admin/assets/dataTables/css/dataTables.bootstrap4.css' %}" rel="stylesheet"  type="text/css"/>
@@ -17,28 +17,21 @@
 
 {% block content %}
     <div class="col-md-12 p-0">
-        <a href="{% url 'Inventarios:Add' %}" type="button" class="btn btn-light mb-3"><i class="fas fa-plus text-success"></i> Agregar producto</a>
+        <a href="{% url 'Bodegas:Add' %}" type="button" class="btn btn-light mb-3"><i class="fas fa-plus text-success"></i> Agregar categoría</a>
         <button type="button" class="btn btn-light mb-3 ml-1" data-toggle="modal" data-target="#searchModal">
             <i class="fas fa-search text-info"></i> Buscar
         </button>
 
-        {% if 'nombre' in request.GET or 'codigoProduto' in request.GET or 'categoria' in request.GET %}
-            <a href="{% url 'Inventarios:Base' %}" type="button" class="btn btn-light mb-3 ml-1"><i class="fas fa-eraser text-danger"></i> Quitar búsqueda</a>
+        {% if 'nombre' in request.GET %}
+            <a href="{% url 'Bodegas:Base' %}" type="button" class="btn btn-light mb-3 ml-1"><i class="fas fa-eraser text-danger"></i> Quitar búsqueda</a>
         {% endif %}
     </div>
 
-    {% if 'nombre' in request.GET or 'codigoProduto' in request.GET or 'categoria' in request.GET %}
+    {% if 'nombre' in request.GET %}
     <div class="col-md-12 p-0 my-3 text-white">
         <h3>
             {% if 'nombre' in request.GET %}
                 Buscando por nombre: <b>{{request.GET.nombre}}</b>
-            {% elif 'codigoProduto' in request.GET %}
-                Buscando por código: <b>{{request.GET.codigoProduto}}</b>
-            {% elif 'categoria' in request.GET %}
-                Buscando por categoría: <b>
-                    {% get_Categoria request.GET.categoria as categoria %}
-                    {{categoria}}
-                </b>
             {% endif %}
         </h3>
     </div>
@@ -56,9 +49,8 @@
                 <thead>
                     <tr>
                         <th style="text-align: center;">Nombre</th>
-                        <th style="text-align: center;">Código producto</th>
-                        <th style="text-align: center;">Cantidad en existencias</th>
-                        <th style="text-align: center;">Categorías</th>
+                        <th style="text-align: center;">Responsable</th>
+                        <th style="text-align: center;">Observación</th>
                         <th style="text-align: center;">
                             <a href="#" title="Haga clic sobre el icono para editar la fila."><i class='fa fa-info text-white'></i></a>
                         </th>
@@ -71,15 +63,10 @@
                     {% for linea in page_obj %}
                         <tr>
                             <td style="text-align: center;">{{ linea.nombre }}</td>
-                            <td style="text-align: center;">{{ linea.codigoProduto }}</td>
-                            <td style="text-align: center;">{{ linea.cantidad }}</td>
-                            <td style="text-align: center;">
-                                {% for categoria in linea.categoria.all %}
-                                    {{categoria.nombre}}<br/>
-                                {% endfor %}
-                            </td>
-                            <td style="text-align: center;"><a href="{% url 'Inventarios:Edit' pk=linea.id %}" class="btn btn-primary"><i class="fas fa-pencil-alt fa-lg"></i> Editar</a></td>
-                            {% comment %} <td style="text-align: center;"><a href="{% url 'Inventarios:Delete' pk=linea.id %}" class="btn btn-danger"><i class="far fa-trash-alt"></i> Borrar</a></td> {% endcomment %}
+                            <td style="text-align: center;">{{linea.responsable.first_name}} {{ linea.responsable.last_name }}</td>
+                            <td>{{ linea.observacion }}</td>
+                            <td style="text-align: center;"><a href="{% url 'Bodegas:Edit' pk=linea.id %}" class="btn btn-primary"><i class="fas fa-pencil-alt fa-lg"></i> Editar</a></td>
+                            {% comment %} <td style="text-align: center;"><a href="{% url 'Bodegas:Delete' pk=linea.id %}" class="btn btn-danger"><i class="far fa-trash-alt"></i> Borrar</a></td> {% endcomment %}
                         </tr>
                     {% endfor%}
                 </tbody>
@@ -97,13 +84,6 @@
                                     <li class="page-item">
                                         <a class="page-link" href="?page={{ page_obj.previous_page_number }}&name={{ request.GET.name }}"><</a>
                                     </li>
-                                {% elif 'codigoProduto' in request.GET %}
-                                    <li class="page-item">
-                                        <a class="page-link" href="?page=1&code={{ request.GET.code }}">Primera</a>
-                                    </li>
-                                    <li class="page-item">
-                                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}&code={{ request.GET.code }}"><</a>
-                                    </li>
                                 {% else %}
                                     <li class="page-item"><a class="page-link" href="?page=1">Primera</a></li>
                                     <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}"><</a></li>
@@ -116,16 +96,12 @@
                                     {% if request.GET.page|to_int == i|to_int %}
                                         {% if 'nombre' in request.GET %}
                                             <a class="page-link page-selected" href="?page={{ i }}&name={{ request.GET.name }}">{{ i }}</a>
-                                        {% elif 'codigoProduto' in request.GET %}
-                                            <a class="page-link page-selected" href="?page={{ i }}&code={{ request.GET.code }}">{{ i }}</a>
                                         {% else %}
                                             <a class="page-link page-selected" href="?page={{ i }}">{{ i }}</a>
                                         {% endif %}
                                     {% else %}
                                         {% if 'nombre' in request.GET %}
                                             <a class="page-link" href="?page={{ i }}&name={{ request.GET.name }}">{{ i }}</a>
-                                        {% elif 'codigoProduto' in request.GET %}
-                                            <a class="page-link" href="?page={{ i }}&code={{ request.GET.code }}">{{ i }}</a>
                                         {% else %}
                                             <a class="page-link" href="?page={{ i }}">{{ i }}</a>
                                         {% endif %}
@@ -140,13 +116,6 @@
                                     </li>
                                     <li class="page-item">
                                         <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}&name={{ request.GET.name }}">Última</a>
-                                    </li>
-                                {% elif 'codigoProduto' in request.GET %}
-                                    <li class="page-item">
-                                        <a class="page-link" href="?page={{ page_obj.next_page_number }}&code={{ request.GET.code }}">></a>
-                                    </li>
-                                    <li class="page-item">
-                                        <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}&code={{ request.GET.code }}">Última</a>
                                     </li>
                                 {% else %}
                                     <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">></a></li>
@@ -165,13 +134,13 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-body">
-                    <form action="{% url 'Inventarios:Search' %}" id="formSearchName" method="get" enctype="multipart/form-data" class="row ">
+                    <form action="{% url 'Bodegas:Search' %}" id="formSearchName" method="get" enctype="multipart/form-data" class="row ">
                         <div class="form-group col-md-12"> {% comment %} nombre {% endcomment %}
                             <label for="id_nombre">Nombre:</label>
                             {% if 'nombre' in request.GET %}
-                                <input type="text" id="id_nombre" name="nombre" class="form-control" placeholder="Nombre" maxlength="100" required="" value="{{request.GET.nombre}}">
+                                <input type="text" name="nombre" class="form-control" placeholder="Nombre" maxlength="100" required="" value="{{request.GET.nombre}}">
                             {% else %}
-                                <input type="text" id="id_nombre" name="nombre" class="form-control" placeholder="Nombre" maxlength="100" required="">
+                                <input type="text" name="nombre" class="form-control" placeholder="Nombre" maxlength="100" required="">
                             {% endif %}
                         </div>
                         <div class="col-md-12 text-right">
@@ -181,45 +150,29 @@
                         </div>
                     </form>
 
-                    <form action="{% url 'Inventarios:Search' %}" id="formSearchCode" method="get" enctype="multipart/form-data" class="row ">
-                        <div class="form-group col-md-12"> {% comment %} codigoProduto {% endcomment %}
-                            <label for="id_codigoProduto">Código del producto:</label>
-                            {% if 'codigoProduto' in request.GET %}
-                                <input type="text" id="id_codigoProduto" name="codigoProduto" class="form-control" placeholder="Código del producto" maxlength="50" required="" value="{{request.GET.codigoProduto}}">
-                            {% else %}
-                                <input type="text" id="id_codigoProduto" name="codigoProduto" class="form-control" placeholder="Código del producto" maxlength="50" required="">
-                            {% endif %}
-                        </div>
-
-                        <div class="col-md-12 text-right">
-                            <button type="submit" class="btn btn-light">
-                                <i class="fas fa-search text-info"></i> Buscar por código
-                            </button>
-                        </div>
-                    </form>
-
-                    <form action="{% url 'Inventarios:Search' %}" method="get" enctype="multipart/form-data" class="row ">
-                        <div class="form-group col-md-12"> {% comment %} categoria {% endcomment %}
-                            <label for="id_categoria">Categoría:</label>
-                            <select id="id_categoria" name="categoria" class="selectpicker w-100" data-live-search="false">
-                                {% get_Categorias_list as categorias %}
-                                {% for categoria in categorias %}
-                                    {% if 'categoria' in request.GET %}
-                                        {% if request.GET.categoria|to_int == categoria.id|to_int %}
-                                            <option value="{{ categoria.id }}" selected>{{ categoria.nombre }}</option> 
+                    <form action="{% url 'Bodegas:Search' %}" method="get" enctype="multipart/form-data" class="row ">
+                        <div class="form-group col-md-12"> {% comment %} nombre {% endcomment %}
+                            <label for="id_nombre">Nombre:</label>
+                            <div class="selectgroup w-100">
+                                <select id="id_responsable" name="responsable" class="selectpicker w-100" data-live-search="true">
+                                    {% get_Usuarios_list as usuarios %}
+                                    {% for usuario in usuarios %}
+                                        {% if 'responsable' in request.GET %}
+                                            {% if usuario.id|to_int == request.GET.responsable|to_int %}
+                                                <option value="{{ usuario.id }}" selected>{{ usuario.first_name }} {{ usuario.last_name }}</option>
+                                            {% else %}
+                                                <option value="{{ usuario.id }}">{{ usuario.first_name }} {{ usuario.last_name }}</option>
+                                            {% endif %}
                                         {% else %}
-                                            <option value="{{ categoria.id }}">{{ categoria.nombre }}</option> 
+                                            <option value="{{ usuario.id }}">{{ usuario.first_name }} {{ usuario.last_name }}</option>
                                         {% endif %}
-                                    {% else %}
-                                        <option value="{{ categoria.id }}">{{ categoria.nombre }}</option>
-                                    {% endif %}
-                                {% endfor%}
-                            </select>
+                                    {% endfor%}
+                                </select>
+                            </div>
                         </div>
-
                         <div class="col-md-12 text-right">
                             <button type="submit" class="btn btn-light">
-                                <i class="fas fa-search text-info"></i> Buscar por categoría
+                                <i class="fas fa-search text-info"></i> Buscar por responsable
                             </button>
                         </div>
                     </form>
@@ -233,12 +186,12 @@
 {% endblock %}
 
 {% block customJs %}
-    <script src="{% static 'inventarios/assets/js/validar.js' %}"></script>
+    <script src="{% static 'bodegas/assets/js/validar.js' %}"></script>
     <script>
         {% if 'created' in request.GET %}
             swal({
                 title: "Realizado",
-                text: "Se ha creado el producto",
+                text: "Se ha creado la categoría",
                 icon: "success",
                 buttons: {
                     confirm: {

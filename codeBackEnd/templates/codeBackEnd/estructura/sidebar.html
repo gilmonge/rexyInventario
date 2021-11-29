@@ -67,6 +67,13 @@
                                 </a>
                             </li>
 
+                            <li class="nav-item">
+                                <a href="{% url 'Bodegas:Base' %}">
+                                    <img src="{% static 'codeBackEnd/admin/img/png/inventory.png' %}">
+                                    <p>Bodegas</p>
+                                </a>
+                            </li>
+
                             {% comment %} {% if request.session.comercioId is not None %}
                                 {% if request.session.comercio_idplan != 0 %}
                                     <li class="nav-item">

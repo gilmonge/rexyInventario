@@ -23,6 +23,6 @@
 {% block content %}
     <form action="" method="post">{% csrf_token %}
         <h2 class="text-white">¿Estás seguro de que quieres borrar "<b>{{ object }}</b>"?</h2>
-        <input type="submit"  class="btn btn-danger float-right" value="Sí, borrar el producto" />
+        <input type="submit"  class="btn btn-danger float-right" value="Sí, borrar" />
     </form>
 {% endblock %}
