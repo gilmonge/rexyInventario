@@ -1,0 +1,93 @@
+{% extends 'codeBackEnd/base.html' %}
+{% load static %}
+{% block title %}Editar proveedores{% endblock %}
+{% block tituloSeccion %}<img class="img-titulo" src="{% static 'codeBackEnd/admin/img/png/shop.png' %}"> Editar proveedores{% endblock %}
+
+{% block customCss %}
+    <style>
+    </style>
+{% endblock %}
+
+{% block content %}
+    <form action="" id="formEdit" method="post" enctype="multipart/form-data" class="row ">
+        {% csrf_token %}
+
+        <div class="form-group col-md-12"> {% comment %} nombre {% endcomment %}
+            {{ form.nombre.label_tag }}
+            {{ form.nombre }}
+            {{ form.nombre.errors }}
+        </div>
+
+        <div class="form-group col-md-12"> {% comment %} identificacion {% endcomment %}
+            {{ form.identificacion.label_tag }}
+            {{ form.identificacion }}
+            {{ form.identificacion.errors }}
+        </div>
+
+        <div class="form-group col-md-12"> {% comment %} email {% endcomment %}
+            {{ form.email.label_tag }}
+            {{ form.email }}
+            {{ form.email.errors }}
+        </div>
+
+        <div class="form-group col-md-12"> {% comment %} direccion {% endcomment %}
+            {{ form.direccion.label_tag }}
+            {{ form.direccion }}
+            {{ form.direccion.errors }}
+        </div>
+
+        <div class="form-group col-md-12"> {% comment %} contacto {% endcomment %}
+            {{ form.contacto.label_tag }}
+            {{ form.contacto }}
+            {{ form.contacto.errors }}
+        </div>
+
+        <div class="form-group col-md-12"> {% comment %} telefono {% endcomment %}
+            {{ form.telefono.label_tag }}
+            {{ form.telefono }}
+            {{ form.telefono.errors }}
+        </div>
+
+        <div class="form-group col-md-12"> {% comment %} observacion {% endcomment %}
+            {{ form.observacion.label_tag }}
+            {{ form.observacion }}
+            {{ form.observacion.errors }}
+        </div>
+
+        <div class="form-group col-md-12 pr-0">
+            <div class="row col-md-12 pr-0">
+                <div class="text-center col-12 order-2 text-sm-left order-sm-1 col-sm-6 p-sm-0">
+                    <a href="{% url 'Proveedores:Base' %}" type="button" class="btn btn-light"><i class="fas fa-chevron-left"></i> Volver al listado</a>
+                </div>
+                <div class="text-center col-12 mb-2 order-1 text-sm-right order-sm-2 mb-sm-0 col-sm-6 p-sm-0">
+                    <button type="submit" class="btn btn-light">
+                        <i class="far fa-save"></i> Guardar cambios
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+
+{% endblock %}
+
+{% block customJs %}
+    <script src="{% static 'proveedores/assets/js/validar.js' %}"></script>
+    <script>
+        {% if 'updated' in request.GET %}
+            swal({
+                title: "Realizado",
+                text: "Se ha actualizado el proveedor",
+                icon: "success",
+                buttons: {
+                    confirm: {
+                        text: "OK",
+                        value: true,
+                        visible: true,
+                        className: "btn btn-success",
+                        closeModal: true
+                    }
+                }
+            });
+        {% endif %}
+    </script>
+{% endblock %}
