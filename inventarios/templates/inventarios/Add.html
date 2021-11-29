@@ -56,12 +56,4 @@
 
 {% block customJs %}
     <script src="{% static 'inventarios/assets/js/validar.js' %}"></script>
-    <script>
-        {% if 'ok' in request.GET %}
-            $("#msgInfo").html(`
-                <p style="color: #212529; font-size: 1.4rem;">Se ha actualizado el comercio correctamente</p>
-            `)
-            $("#Modal_informacion").modal("show")
-        {% endif %}
-    </script>
 {% endblock %}

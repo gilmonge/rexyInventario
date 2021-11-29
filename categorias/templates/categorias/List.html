@@ -1,0 +1,176 @@
+{% extends 'codeBackEnd/base.html' %}
+{% load humanize %}
+{% load static %}
+{% load codeBackEnd_extras %}
+{% block title %}Categorías {{ comercio.nombre }}{% endblock %}
+{% block tituloSeccion %}<img class="img-titulo" src="{% static 'codeBackEnd/admin/img/png/check-list.png' %}"> Categorías disponible{% endblock %}
+
+{% block customHead %}
+    <link href="{% static 'codeBackEnd/admin/assets/dataTables/css/dataTables.bootstrap4.css' %}" rel="stylesheet"  type="text/css"/>
+{% endblock %}
+
+{% block customCss %}
+    <style>
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="col-md-12 p-0">
+        <a href="{% url 'Categorias:Add' %}" type="button" class="btn btn-light mb-3"><i class="fas fa-plus text-success"></i> Agregar categoría</a>
+        <button type="button" class="btn btn-light mb-3 ml-1" data-toggle="modal" data-target="#searchModal">
+            <i class="fas fa-search text-info"></i> Buscar
+        </button>
+
+        {% if 'nombre' in request.GET %}
+            <a href="{% url 'Categorias:Base' %}" type="button" class="btn btn-light mb-3 ml-1"><i class="fas fa-eraser text-danger"></i> Quitar búsqueda</a>
+        {% endif %}
+    </div>
+
+    {% if 'nombre' in request.GET %}
+    <div class="col-md-12 p-0 my-3 text-white">
+        <h3>
+            {% if 'nombre' in request.GET %}
+                Buscando por nombre: <b>{{request.GET.nombre}}</b>
+            {% endif %}
+        </h3>
+    </div>
+    {% endif %}
+
+    <div class="table-responsive">
+        {% if page_obj|length == 0 %}
+            <div class="card-category estado estado-producto">
+                <div class="alert alert-danger" role="alert">
+                    <span>No hay datos para mostrar</span>
+                </div>
+            </div>
+        {% else %}
+            <table class="display table table-striped table-hover" id="dataTable">
+                <thead>
+                    <tr>
+                        <th style="text-align: center;">Nombre</th>
+                        <th style="text-align: center;">
+                            <a href="#" title="Haga clic sobre el icono para editar la fila."><i class='fa fa-info text-white'></i></a>
+                        </th>
+                        {% comment %} <th style="text-align: center;">
+                            <a href="#" title="Haga clic sobre el icono para eliminar la fila."><i class='fa fa-info'></i></a>
+                        </th> {% endcomment %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for linea in page_obj %}
+                        <tr>
+                            <td style="text-align: center;">{{ linea.nombre }}</td>
+                            <td style="text-align: center;"><a href="{% url 'Categorias:Edit' pk=linea.id %}" class="btn btn-primary"><i class="fas fa-pencil-alt fa-lg"></i> Editar</a></td>
+                            {% comment %} <td style="text-align: center;"><a href="{% url 'Categorias:Delete' pk=linea.id %}" class="btn btn-danger"><i class="far fa-trash-alt"></i> Borrar</a></td> {% endcomment %}
+                        </tr>
+                    {% endfor%}
+                </tbody>
+            </table>
+
+            {% if is_paginated %}
+                <div class="d-flex justify-content-center">
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination">
+                            {% if page_obj.has_previous %}
+                                {% if 'nombre' in request.GET %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page=1&name={{ request.GET.name }}">Primera</a>
+                                    </li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}&name={{ request.GET.name }}"><</a>
+                                    </li>
+                                {% else %}
+                                    <li class="page-item"><a class="page-link" href="?page=1">Primera</a></li>
+                                    <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}"><</a></li>
+                                {% endif %}
+                            {% endif %}
+
+                            {% for i in page_obj.paginator.page_range %}
+                                
+                                <li class="page-item">
+                                    {% if request.GET.page|to_int == i|to_int %}
+                                        {% if 'nombre' in request.GET %}
+                                            <a class="page-link page-selected" href="?page={{ i }}&name={{ request.GET.name }}">{{ i }}</a>
+                                        {% else %}
+                                            <a class="page-link page-selected" href="?page={{ i }}">{{ i }}</a>
+                                        {% endif %}
+                                    {% else %}
+                                        {% if 'nombre' in request.GET %}
+                                            <a class="page-link" href="?page={{ i }}&name={{ request.GET.name }}">{{ i }}</a>
+                                        {% else %}
+                                            <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+                                        {% endif %}
+                                    {% endif %}
+                                </li>
+                            {% endfor %}
+
+                            {% if page_obj.has_next %}
+                                {% if 'nombre' in request.GET %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page={{ page_obj.next_page_number }}&name={{ request.GET.name }}">></a>
+                                    </li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}&name={{ request.GET.name }}">Última</a>
+                                    </li>
+                                {% else %}
+                                    <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">></a></li>
+                                    <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Última</a></li>
+                                {% endif %}
+                            {% endif %}
+                        </ul>
+                    </nav>
+                </div>
+            {% endif %}
+
+        {% endif %}
+    </div>
+
+    <div class="modal fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <form action="{% url 'Categorias:Search' %}" id="formSearchName" method="get" enctype="multipart/form-data" class="row ">
+                        <div class="form-group col-md-12"> {% comment %} nombre {% endcomment %}
+                            <label for="id_nombre">Nombre:</label>
+                            {% if 'nombre' in request.GET %}
+                                <input type="text" name="nombre" class="form-control" placeholder="Nombre" maxlength="100" required="" value="{{request.GET.nombre}}">
+                            {% else %}
+                                <input type="text" name="nombre" class="form-control" placeholder="Nombre" maxlength="100" required="">
+                            {% endif %}
+                        </div>
+                        <div class="col-md-12 text-right">
+                            <button type="submit" class="btn btn-light">
+                                <i class="fas fa-search text-info"></i> Buscar por nombre
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block customJs %}
+    <script src="{% static 'categorias/assets/js/validar.js' %}"></script>
+    <script>
+        {% if 'created' in request.GET %}
+            swal({
+                title: "Realizado",
+                text: "Se ha creado la categoría",
+                icon: "success",
+                buttons: {
+                    confirm: {
+                        text: "OK",
+                        value: true,
+                        visible: true,
+                        className: "btn btn-success",
+                        closeModal: true
+                    }
+                }
+            });
+        {% endif %}
+    </script>
+{% endblock %}

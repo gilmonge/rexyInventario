@@ -18,6 +18,7 @@ from django.urls import path, include
 
 from codeBackEnd.urls import codeBackEnd_patterns
 from inventarios.urls import inventarios_patterns
+from categorias.urls import categorias_patterns
 
 urlpatterns = [
     path('DJAdmin/', admin.site.urls),
@@ -28,4 +29,5 @@ urlpatterns = [
     # Paths de Admin
     path('', include(codeBackEnd_patterns)),
     path('inventarios/', include(inventarios_patterns)),
+    path('categorias/', include(categorias_patterns)),
 ]
