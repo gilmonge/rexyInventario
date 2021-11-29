@@ -10,5 +10,4 @@ def get_Categorias_list():
 
 @register.simple_tag
 def get_Categoria(pk):
-    print(pk)
     return Categorias.objects.filter(pk = pk)[0]
