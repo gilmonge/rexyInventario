@@ -63,17 +63,20 @@ class UpdateView(UpdateView):
 
 def Search(request):
     filtroNombre = request.GET.get('nombre', '')
-    filtrocodigo = request.GET.get('codigoProduto', '0')
+    filtroCodigo = request.GET.get('codigoProduto', '')
+    filtroCategoria = request.GET.get('categoria', '')
 
     # trae los productos relacionados al comercio
     filtro_list = []
 
     if filtroNombre != '' and filtroNombre != None:
         filtro_list = Productos.objects.filter(nombre__icontains=filtroNombre)
-    elif filtrocodigo != '' and filtrocodigo != None:
-        filtro_list = Productos.objects.filter(codigoProduto__icontains=filtrocodigo)
+    elif filtroCodigo != '' and filtroCodigo != None:
+        filtro_list = Productos.objects.filter(codigoProduto__icontains=filtroCodigo)
+    elif filtroCategoria != '' and filtroCategoria != None:
+        filtro_list = Productos.objects.filter(categoria__id=filtroCategoria)
     else:
-        return reverse_lazy('Inventarios:Base')
+        return redirect(reverse_lazy('Inventarios:Base'))
 
     page = request.GET.get('page', 1)
     paginator = Paginator(filtro_list, 30)

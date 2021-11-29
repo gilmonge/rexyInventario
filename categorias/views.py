@@ -69,7 +69,7 @@ def Search(request):
     if filtroNombre != '' and filtroNombre != None:
         filtro_list = Categorias.objects.filter(nombre__icontains=filtroNombre)
     else:
-        return reverse_lazy('Categorias:Base')
+        return redirect(reverse_lazy('Categorias:Base'))
 
     page = request.GET.get('page', 1)
     paginator = Paginator(filtro_list, 30)

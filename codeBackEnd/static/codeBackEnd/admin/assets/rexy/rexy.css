@@ -215,4 +215,20 @@
         color: #fff;
         font-size: 1.1rem;
     }
+
+    .bootstrap-select>.dropdown-toggle {
+        background: #001737 !important;
+        color: #fff !important;
+        border-color: #003B87 !important;
+    }
+    .bootstrap-select>.dropdown-toggle:active{
+        background: #00132D !important;
+        color: #fff !important;
+        border-color: #003B87 !important;
+    }
+    .dropdown-item.active, .dropdown-item:active {
+        color: #fff;
+        text-decoration: none;
+        background-color: #00132D;
+    }
 /* mensajes personalizados */

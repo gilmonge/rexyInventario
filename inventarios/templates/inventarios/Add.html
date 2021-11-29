@@ -1,5 +1,6 @@
 {% extends 'codeBackEnd/base.html' %}
 {% load static %}
+{% load inventarios_extras %}
 {% block title %}Nuevo producto{% endblock %}
 {% block tituloSeccion %}<img class="img-titulo" src="{% static 'codeBackEnd/admin/img/png/box.png' %}"> Nuevo producto{% endblock %}
 
@@ -21,16 +22,29 @@
             {{ form.nombre.errors }}
         </div>
 
-        <div class="form-group col-md-3"> {% comment %} cantidad {% endcomment %}
-            {{ form.cantidad.label_tag }}
+        <div class="form-group col-md-6"> {% comment %} cantidad {% endcomment %}
+            <label for="id_cantidad">Cantidad de existencias:</label>
             {{ form.cantidad }}
             {{ form.cantidad.errors }}
         </div>
 
-        <div class="form-group col-md-3"> {% comment %} codigoProduto {% endcomment %}
+        <div class="form-group col-md-6"> {% comment %} codigoProduto {% endcomment %}
             {{ form.codigoProduto.label_tag }}
             {{ form.codigoProduto }}
             {{ form.codigoProduto.errors }}
+        </div>
+
+        <div class="form-group col-md-6"> {% comment %} categoria {% endcomment %}
+            {{ form.categoria.label_tag }}
+            <div class="selectgroup w-100">
+                <select id="id_categoria" name="categoria" class="selectpicker w-100" multiple data-live-search="true">
+                    {% get_Categorias_list as categorias %}
+                    {% for categoria in categorias %}
+                        <option value="{{ categoria.id }}">{{ categoria.nombre }}</option> 
+                    {% endfor%}
+                </select>
+            </div>
+            {{ form.categoria.errors }}
         </div>
 
         <div class="form-group col-md-12"> {% comment %} descripcion {% endcomment %}

@@ -14,10 +14,10 @@ let validaNombre = {
 }
 let validaCantidad = {
     validators:{
-        notEmpty: { message: 'La cantidad es obligatoria.' },
+        notEmpty: { message: 'La cantidad de existencias es obligatoria.' },
         regexp: {
             regexp: /^[0-9]+$/,
-            message: 'La cantidad solo puede contener valores numéricos'
+            message: 'La cantidad de existencias solo puede contener valores numéricos'
         }
     }
 }
@@ -49,6 +49,11 @@ let validaDescripcion = {
         }
     }
 }
+let validaCategoria = {
+    validators:{
+        notEmpty: { message: 'Debe marcar al menos una categoría.' },
+    }
+}
 
 document.addEventListener('DOMContentLoaded', function() {
     /* formAdd*/
@@ -61,6 +66,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     cantidad: validaCantidad,
                     codigoProduto: validaCodigoProduto,
                     descripcion: validaDescripcion,
+                    categoria: validaCategoria,
                 },
                 plugins: {
                     trigger: new FormValidation.plugins.Trigger(),
@@ -87,6 +93,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     nombre: validaNombre,
                     codigoProduto: validaCodigoProduto,
                     descripcion: validaDescripcion,
+                    categoria: validaCategoria,
                 },
                 plugins: {
                     trigger: new FormValidation.plugins.Trigger(),

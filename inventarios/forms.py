@@ -8,6 +8,7 @@ class BaseForm(forms.ModelForm):
             'nombre',
             'cantidad',
             'codigoProduto',
+            'categoria',
             'descripcion',
         ]
 
@@ -24,6 +25,7 @@ class FormEdit(forms.ModelForm):
         fields = [
             'nombre',
             'codigoProduto',
+            'categoria',
             'descripcion',
         ]
 
