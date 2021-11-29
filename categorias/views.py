@@ -43,7 +43,6 @@ class CreateView(CreateView):
             return super().dispatch(request, *args, *kwargs)
 
     def get_success_url(self):
-        # return reverse_lazy('comercioAdmin:producto', kwargs={ 'pk': self.object.id })
         return reverse_lazy('Categorias:Base') + '?created'
 
 class UpdateView(UpdateView):
