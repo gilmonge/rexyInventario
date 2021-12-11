@@ -11,205 +11,148 @@
         .customCard{
             background: rgba(0,0,0,.2) !important;
         }
+
+        .icono-card{
+            background: #00193A;
+            border-radius: 4px;
+        }
+
+        .card-stats{
+            background: rgba(0,0,0,0.2) !important;
+        }
+        .card-stats:hover{
+            background: rgba(0,0,0,0.4) !important;
+            text-decoration: none;
+        }
+
+        @media(max-width: 575px){
+            .card-stats .col-stats {
+                display: block !important;
+            }
+        }
     </style>
-    {% if request.session.comercioId is None %}
-        <style>
-            .card-stats{
-                background: rgba(0,0,0,0.2) !important;
-            }
-            .card-stats:hover{
-                background: rgba(0,0,0,0.4) !important;
-            }
-        </style>
-    {% endif %}
 {% endblock %}
 
 {% block content %}
     <div class="row">
-        
-        {% comment %} <div class="col-md-6">
-            <div class="card full-height">
-                <div class="card-body">
-                    <div class="card-title">Overall statistics</div>
-                    <div class="card-category">Daily information about statistics in system</div>
-
-                    <div class="d-flex flex-wrap justify-content-around pb-2 pt-4">
-                        <div class="px-2 pb-2 pb-md-0 text-center">
-                            <div id="circles-1"></div>
-                            <h6 class="fw-bold mt-3 mb-0">New Users</h6>
-                        </div>
-                        <div class="px-2 pb-2 pb-md-0 text-center">
-                            <div id="circles-2"></div>
-                            <h6 class="fw-bold mt-3 mb-0">Sales</h6>
-                        </div>
-                        <div class="px-2 pb-2 pb-md-0 text-center">
-                            <div id="circles-3"></div>
-                            <h6 class="fw-bold mt-3 mb-0">Subscribers</h6>
+        <div class="col-md-12 row row-card-no-pd">
+            <div class="col-12 col-sm-6 col-md-6 mb-2">
+                <a class="card card-stats card-round" href="{% url 'Categorias:Base' %}">
+                    <div class="card-body ">
+                        <div class="row">
+                            <div class="col-sm-5">
+                                <div class="icon-big text-center icono-card">
+                                    <img class="img-titulo" src="{% static 'codeBackEnd/admin/img/png/import.png' %}">
+                                </div>
+                            </div>
+                            <div class="col-sm-7 col-stats">
+                                <div class="numbers">
+                                    <h4 class="card-title text-center">Registrar entrada</h4>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </a>
+            </div>
+
+            <div class="col-12 col-sm-6 col-md-6 mb-2">
+                <a class="card card-stats card-round" href="{% url 'Categorias:Base' %}">
+                    <div class="card-body ">
+                        <div class="row">
+                            <div class="col-sm-5">
+                                <div class="icon-big text-center icono-card">
+                                    <img class="img-titulo" src="{% static 'codeBackEnd/admin/img/png/export.png' %}">
+                                </div>
+                            </div>
+                            <div class="col-sm-7 col-stats">
+                                <div class="numbers">
+                                    <h4 class="card-title text-center">Registrar salida</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
             </div>
         </div>
 
-        <div class="col-md-12 row">
-            <div class="col-md-3 col-sm-6">
-                <div class="card card-stats card-primary card-round">
-                    <div class="card-body">
+        <div class="col-md-12 row row-card-no-pd">
+            <div class="col-6 col-sm-6 col-md-3 mb-2">
+                <a class="card card-stats card-round" href="{% url 'Categorias:Base' %}">
+                    <div class="card-body ">
                         <div class="row">
-                            <div class="col-5">
-                                <div class="icon-big text-center">
-                                    <i class="flaticon-users"></i>
+                            <div class="col-sm-5">
+                                <div class="icon-big text-center icono-card">
+                                    <img class="img-titulo" src="{% static 'codeBackEnd/admin/img/png/check-list.png' %}">
                                 </div>
                             </div>
-                            <div class="col-7 col-stats">
+                            <div class="col-sm-7 col-stats">
                                 <div class="numbers">
-                                    <p class="card-category">Visitors</p>
-                                    <h4 class="card-title">1,294</h4>
+                                    <h4 class="card-title text-center">Categorías</h4>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </a>
             </div>
 
-            <div class="col-md-3 col-sm-6">
-                <div class="card card-stats card-info card-round">
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-5">
-                                <div class="icon-big text-center">
-                                    <i class="flaticon-interface-6"></i>
-                                </div>
-                            </div>
-                            <div class="col-7 col-stats">
-                                <div class="numbers">
-                                    <p class="card-category">Subscribers</p>
-                                    <h4 class="card-title">1303</h4>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3 col-sm-6">
-                <div class="card card-stats card-success card-round">
+            <div class="col-6 col-sm-6 col-md-3 mb-2">
+                <a class="card card-stats card-round" href="{% url 'Inventarios:Base' %}">
                     <div class="card-body ">
                         <div class="row">
-                            <div class="col-5">
-                                <div class="icon-big text-center">
-                                    <i class="flaticon-analytics"></i>
+                            <div class="col-sm-5">
+                                <div class="icon-big text-center icono-card">
+                                    <img class="img-titulo" src="{% static 'codeBackEnd/admin/img/png/box.png' %}">
                                 </div>
                             </div>
-                            <div class="col-7 col-stats">
+                            <div class="col-sm-7 col-stats">
                                 <div class="numbers">
-                                    <p class="card-category">Sales</p>
-                                    <h4 class="card-title">$ 1,345</h4>
+                                    <h4 class="card-title text-center">Productos</h4>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </a>
             </div>
-            <div class="col-md-3 col-sm-6">
-                <div class="card card-stats card-secondary card-round">
-                    <div class="card-body ">
-                        <div class="row">
-                            <div class="col-5">
-                                <div class="icon-big text-center">
-                                    <i class="flaticon-success"></i>
-                                </div>
-                            </div>
-                            <div class="col-7 col-stats">
-                                <div class="numbers">
-                                    <p class="card-category">Order</p>
-                                    <h4 class="card-title">576</h4>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div> 
-        </div>{% endcomment %}
-        
-        {% comment %} <div class="col-md-12 row row-card-no-pd">
-            <div class="col-sm-6 col-md-3">
-                <div class="card card-stats card-round">
-                    <div class="card-body ">
-                        <div class="row">
-                            <div class="col-5">
-                                <div class="icon-big text-center">
-                                    <i class="flaticon-chart-pie text-warning"></i>
-                                </div>
-                            </div>
-                            <div class="col-7 col-stats">
-                                <div class="numbers">
-                                    <p class="card-category">Number</p>
-                                    <h4 class="card-title">150GB</h4>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-6 col-md-3">
-                <div class="card card-stats card-round">
-                    <div class="card-body ">
-                        <div class="row">
-                            <div class="col-5">
-                                <div class="icon-big text-center">
-                                    <i class="flaticon-coins text-success"></i>
-                                </div>
-                            </div>
-                            <div class="col-7 col-stats">
-                                <div class="numbers">
-                                    <p class="card-category">Revenue</p>
-                                    <h4 class="card-title">$ 1,345</h4>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-6 col-md-3">
-                <div class="card card-stats card-round">
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-5">
-                                <div class="icon-big text-center">
-                                    <i class="flaticon-error text-danger"></i>
-                                </div>
-                            </div>
-                            <div class="col-7 col-stats">
-                                <div class="numbers">
-                                    <p class="card-category">Errors</p>
-                                    <h4 class="card-title">23</h4>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-6 col-md-3">
-                <div class="card card-stats card-round">
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-5">
-                                <div class="icon-big text-center">
-                                    <i class="flaticon-twitter text-primary"></i>
-                                </div>
-                            </div>
-                            <div class="col-7 col-stats">
-                                <div class="numbers">
-                                    <p class="card-category">Followers</p>
-                                    <h4 class="card-title">+45K</h4>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div> {% endcomment %}
 
+            <div class="col-6 col-sm-6 col-md-3 mb-2">
+                <a class="card card-stats card-round" href="{% url 'Bodegas:Base' %}">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-5">
+                                <div class="icon-big text-center icono-card">
+                                    <img class="img-titulo" src="{% static 'codeBackEnd/admin/img/png/inventory.png' %}">
+                                </div>
+                            </div>
+                            <div class="col-sm-7 col-stats">
+                                <div class="numbers">
+                                    <h4 class="card-title text-center">Bodegas</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-6 col-sm-6 col-md-3 mb-2">
+                <a class="card card-stats card-round" href="{% url 'Proveedores:Base' %}">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-5">
+                                <div class="icon-big text-center icono-card">
+                                    <img class="img-titulo" src="{% static 'codeBackEnd/admin/img/png/shop.png' %}">
+                                </div>
+                            </div>
+                            <div class="col-sm-7 col-stats">
+                                <div class="numbers ">
+                                    <h4 class="card-title text-center">Proveedores</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+        </div>
     </div>
 {% endblock %}
 
