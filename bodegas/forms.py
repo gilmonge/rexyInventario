@@ -1,5 +1,5 @@
 from django import forms
-from bodegas.models import Bodegas
+from .models import Bodegas
 
 class BaseForm(forms.ModelForm):
     class Meta:

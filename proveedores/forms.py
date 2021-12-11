@@ -1,5 +1,5 @@
 from django import forms
-from proveedores.models import Proveedores
+from .models import Proveedores
 
 class BaseForm(forms.ModelForm):
     class Meta:
