@@ -1,7 +1,6 @@
 {% extends 'codeBackEnd/base.html' %}
 {% load humanize %}
 {% load static %}
-{% load bodegas_extras %}
 {% load codeBackEnd_extras %}
 {% block title %}Bodegas{% endblock %}
 {% block tituloSeccion %}<img class="img-titulo" src="{% static 'codeBackEnd/admin/img/png/inventory.png' %}"> Bodegas disponibles{% endblock %}
@@ -152,7 +151,7 @@
 
                     <form action="{% url 'Bodegas:Search' %}" method="get" enctype="multipart/form-data" class="row ">
                         <div class="form-group col-md-12"> {% comment %} nombre {% endcomment %}
-                            <label for="id_nombre">Nombre:</label>
+                            <label for="id_nombre">Responsable:</label>
                             <div class="selectgroup w-100">
                                 <select id="id_responsable" name="responsable" class="selectpicker w-100" data-live-search="true">
                                     {% get_Usuarios_list as usuarios %}

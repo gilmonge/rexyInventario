@@ -56,61 +56,6 @@ let validaCategoria = {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    /* formAdd*/
-    if ( document.getElementById( "formAdd" )) {
-        FormValidation.formValidation(
-            document.getElementById('formAdd'),
-            {
-                fields: {
-                    nombre: validaNombre,
-                    cantidad: validaCantidad,
-                    codigoProduto: validaCodigoProduto,
-                    descripcion: validaDescripcion,
-                    categoria: validaCategoria,
-                },
-                plugins: {
-                    trigger: new FormValidation.plugins.Trigger(),
-                    bootstrap: new FormValidation.plugins.Bootstrap(),
-                    submitButton: new FormValidation.plugins.SubmitButton(),
-                    defaultSubmit: new FormValidation.plugins.DefaultSubmit(),
-                    icon: new FormValidation.plugins.Icon({
-                        valid: 'fa fa-check',
-                        invalid: 'fa fa-times',
-                        validating: 'fa fa-refresh',
-                    })
-                }
-            }
-        );
-    }
-    /* formAdd*/
-
-    /* formEdit*/
-    if ( document.getElementById( "formEdit" )) {
-        FormValidation.formValidation(
-            document.getElementById('formEdit'),
-            {
-                fields: {
-                    nombre: validaNombre,
-                    codigoProduto: validaCodigoProduto,
-                    descripcion: validaDescripcion,
-                    categoria: validaCategoria,
-                },
-                plugins: {
-                    trigger: new FormValidation.plugins.Trigger(),
-                    bootstrap: new FormValidation.plugins.Bootstrap(),
-                    submitButton: new FormValidation.plugins.SubmitButton(),
-                    defaultSubmit: new FormValidation.plugins.DefaultSubmit(),
-                    icon: new FormValidation.plugins.Icon({
-                        valid: 'fa fa-check',
-                        invalid: 'fa fa-times',
-                        validating: 'fa fa-refresh',
-                    })
-                }
-            }
-        );
-    }
-    /* formEdit*/
-
     /* formSearchName*/
     if ( document.getElementById( "formSearchName" )) {
         FormValidation.formValidation(
@@ -135,13 +80,17 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     /* formSearchName*/
 
-    /* formSearchCode*/
-    if ( document.getElementById( "formSearchCode" )) {
+    /* formAddInventario*/
+    if ( document.getElementById( "formAddInventario" )) {
         FormValidation.formValidation(
-            document.getElementById('formSearchCode'),
+            document.getElementById('formAddInventario'),
             {
                 fields: {
+                    nombre: validaNombre,
+                    cantidad: validaCantidad,
                     codigoProduto: validaCodigoProduto,
+                    descripcion: validaDescripcion,
+                    categoria: validaCategoria,
                 },
                 plugins: {
                     trigger: new FormValidation.plugins.Trigger(),
@@ -157,5 +106,5 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         );
     }
-    /* formSearchCode*/
+    /* formAddInventario*/
 });

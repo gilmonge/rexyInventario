@@ -100,7 +100,6 @@ const listadoCache = [
     "/static/codeBackEnd/admin/img/svg/discover.svg",
     "/static/codeBackEnd/admin/img/svg/configuraciones-blue.svg",
     "/static/codeBackEnd/admin/img/svg/image.svg",
-    "/media/productos/1620784984.838725.jpeg",
     "/static/codeBackEnd/admin/img/svg/secure-shield.svg",
 
 ];

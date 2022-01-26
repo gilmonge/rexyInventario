@@ -21,6 +21,7 @@ from inventarios.urls import inventarios_patterns
 from categorias.urls import categorias_patterns
 from bodegas.urls import bodegas_patterns
 from proveedores.urls import proveedores_patterns
+from transaccionesInventarios.urls import transaccionesInv_patterns
 
 urlpatterns = [
     path('DJAdmin/', admin.site.urls),
@@ -31,8 +32,9 @@ urlpatterns = [
     # Paths de Admin
     path('', include(codeBackEnd_patterns)),
 
-    path('inventarios/',    include(inventarios_patterns)),
-    path('categorias/',     include(categorias_patterns)),
-    path('bodegas/',        include(bodegas_patterns)),
+    path('inventarios/',        include(inventarios_patterns)),
+    path('categorias/',         include(categorias_patterns)),
+    path('bodegas/',            include(bodegas_patterns)),
     path('proveedores/',        include(proveedores_patterns)),
+    path('transaccionesInv/',   include(transaccionesInv_patterns)),
 ]

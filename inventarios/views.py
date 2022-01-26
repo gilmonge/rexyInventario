@@ -3,8 +3,10 @@ from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.urls import reverse_lazy, reverse
+from django.http import JsonResponse
 from .models import Productos
 from .forms import BaseForm, FormEdit
+import json
 
 # Create your views here.
 class baseListView(ListView):
@@ -62,35 +64,87 @@ class UpdateView(UpdateView):
         return reverse_lazy('Inventarios:Edit', args=[self.object.id]) + '?updated'
 
 def Search(request):
-    filtroNombre = request.GET.get('nombre', '')
-    filtroCodigo = request.GET.get('codigoProduto', '')
-    filtroCategoria = request.GET.get('categoria', '')
+    if request.user.is_authenticated:
+        filtroNombre = request.GET.get('nombre', '')
+        filtroCodigo = request.GET.get('codigoProduto', '')
+        filtroCategoria = request.GET.get('categoria', '')
 
-    # trae los productos relacionados al comercio
-    filtro_list = []
+        # trae los productos relacionados al comercio
+        filtro_list = []
 
-    if filtroNombre != '' and filtroNombre != None:
-        filtro_list = Productos.objects.filter(nombre__icontains=filtroNombre)
-    elif filtroCodigo != '' and filtroCodigo != None:
-        filtro_list = Productos.objects.filter(codigoProduto__icontains=filtroCodigo)
-    elif filtroCategoria != '' and filtroCategoria != None:
-        filtro_list = Productos.objects.filter(categoria__id=filtroCategoria)
+        if filtroNombre != '' and filtroNombre != None:
+            filtro_list = Productos.objects.filter(nombre__icontains=filtroNombre)
+        elif filtroCodigo != '' and filtroCodigo != None:
+            filtro_list = Productos.objects.filter(codigoProduto__icontains=filtroCodigo)
+        elif filtroCategoria != '' and filtroCategoria != None:
+            filtro_list = Productos.objects.filter(categoria__id=filtroCategoria)
+        else:
+            return redirect(reverse_lazy('Inventarios:Base'))
+
+        page = request.GET.get('page', 1)
+        paginator = Paginator(filtro_list, 30)
+
+        try:
+            productos = paginator.page(page)
+        except PageNotAnInteger:
+            productos = paginator.page(1)
+        except EmptyPage:
+            productos = paginator.page(paginator.num_pages)
+
+        datos = {
+            'is_paginated':  True if paginator.num_pages > 1 else False,
+            'page_obj': productos,
+        }
+
+        return render(request, "inventarios/List.html", datos)
     else:
-        return redirect(reverse_lazy('Inventarios:Base'))
+        return redirect('login')
 
-    page = request.GET.get('page', 1)
-    paginator = Paginator(filtro_list, 30)
+def GetProduct(request):
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            filtroCodigo = request.POST['codigoProduto']
 
-    try:
-        productos = paginator.page(page)
-    except PageNotAnInteger:
-        productos = paginator.page(1)
-    except EmptyPage:
-        productos = paginator.page(paginator.num_pages)
+            if filtroCodigo != '':
+                try:
+                    producto = Productos.objects.filter(codigoProduto=filtroCodigo)
+                except Productos.DoesNotExist:
+                    return JsonResponse({"error": True, "existe": 0})
 
-    datos = {
-        'is_paginated':  True if paginator.num_pages > 1 else False,
-        'page_obj': productos,
-    }
+                if producto:
+                    productoEncontrado = {
+                        'nombre': producto[0].nombre,
+                        'id': producto[0].id,
+                    }
+                    return JsonResponse(productoEncontrado)
+                else:
+                    return JsonResponse({"error": True, "existe": 0})
+            else:
+                return JsonResponse({"error": True})
+        else:
+            return JsonResponse({"error": True})
+    else:
+        return JsonResponse({ "error": True, "msj": "No authenticated" })
 
-    return render(request, "inventarios/List.html", datos)
+def AddProduct(request):
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            categorias = request.POST.getlist('categoria[]')
+            datosInventario = {
+                'descripcion':request.POST['descripcion'],
+                'categoria':request.POST.getlist('categoria[]'),
+                'codigoProduto':request.POST['codigoProduto'],
+                'cantidad':request.POST['cantidad'],
+                'nombre':request.POST['nombre'],
+            }
+
+            form = BaseForm(datosInventario)
+            if form.is_valid():
+                form.save()
+                return JsonResponse({ "error": False, "msj": "Saved" })
+            else:
+                return JsonResponse({ "error": True, "msj": "Errors found" })
+        else:
+            return JsonResponse({ "error": True, "msj": "Method not allowed" })
+    else:
+        return JsonResponse({ "error": True, "msj": "No authenticated" })

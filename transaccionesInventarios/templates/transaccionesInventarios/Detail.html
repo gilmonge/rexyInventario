@@ -1,0 +1,117 @@
+{% extends 'codeBackEnd/base.html' %}
+{% load humanize %}
+{% load static %}
+{% load codeBackEnd_extras %}
+{% block title %}Datos transacción {{transaccion.id}}{% endblock %}
+{% block tituloSeccion %}<img class="img-titulo" src="{% static 'codeBackEnd/admin/img/png/transaction-white.png' %}"> Datos transacción {{transaccion.id}}{% endblock %}
+
+{% block customHead %}
+{% endblock %}
+
+{% block customCss %}
+    <style>
+        .customCard{
+            background: rgba(0,0,0,.2) !important;
+        }
+
+        .icono-card{
+            background: #00193A;
+            border-radius: 4px;
+        }
+
+        .card-stats{
+            background: rgba(0,0,0,0.2) !important;
+        }
+        .card-stats:hover{
+            background: rgba(0,0,0,0.4) !important;
+            text-decoration: none;
+        }
+
+        @media(max-width: 575px){
+            .card-stats .col-stats {
+                display: block !important;
+            }
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-12 row row-card-no-pd">
+            <div class="col-md-12 row">
+                <div class="col-12 col-sm-6 col-md-6">
+                    <div class="card card-stats card-round" style="margin-bottom: 10px;">
+                        <div class="card-body ">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <h4 class="col-sm-12 card-title">Datos transacción {{transaccion.id}}</h4>
+                                    <p class="col-sm-12 text-white" style="font-size: 16px;">
+                                        <b>Encargado</b>: {{transaccion.responsable.first_name}} {{transaccion.responsable.last_name}} <br>
+                                        <b>Fecha</b>: {{ transaccion.fecha|date:"d-m-Y h:i a" }}<br>
+                                        <b>Tipo</b>: {% if transaccion.tipo %} Entrada {% else %} Salida {% endif %}
+                                        <br>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-6 col-md-6 mb-2">
+                    <div class="card card-stats card-round">
+                        <div class="card-body ">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <h4 class="col-sm-12 card-title">Datos Bodega</h4>
+                                    <p class="col-sm-12 text-white" style="font-size: 16px;">
+                                        <b>Nombre</b>: {{transaccion.bodega.nombre}}<br>
+                                        <b>Encargado</b>: {{transaccion.bodega.responsable.first_name}} {{transaccion.bodega.responsable.last_name}} <br>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12 row" id="lineasTransaccion"> 
+                {% for linea in lineas %}
+                    <div class="col-12">
+                        <div class="card card-stats card-round" style="margin-bottom: 5px;">
+                            <div class="card-body " style="padding-top: 2px !important; padding-bottom: 2px !important;">
+                                <div class="row">
+                                    <div class="col-sm-12 row">
+                                        <div class="col-sm-6">
+                                            <p class="text-white" style="font-size: 15px; margin-bottom: 4px !important;">
+                                                <b>Producto</b>: {{linea.producto.nombre}} <br>
+                                                <b>Código</b>: {{linea.producto.codigoProduto}} <br>
+                                            </p>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <p class="text-white" style="font-size: 16px; margin-bottom: 4px !important;">
+                                                <b>Cantidad {% if transaccion.tipo %} ingresado {% else %} rebajado {% endif %}</b>: {{linea.cantidad}} <br>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        
+        <div class="form-group col-md-12 pr-0">
+            <div class="row col-md-12 pr-0">
+                <div class="text-center col-12 order-2 text-sm-left order-sm-1 col-sm-6 p-sm-0">
+                    <a href="{% url 'TransaccionesInv:Base' %}" type="button" class="btn btn-light"><i class="fas fa-chevron-left"></i> Volver al listado</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block customJs %}
+    <script>
+    </script>
+{% endblock %}

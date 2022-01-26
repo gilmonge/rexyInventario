@@ -1,0 +1,41 @@
+{% extends 'codeBackEnd/base.html' %}
+{% load static %}
+{% block title %}Transacciones de inventarios{% endblock %}
+{% block tituloSeccion %}<img class="img-titulo" src="{% static 'codeBackEnd/admin/img/png/check-list.png' %}"> Transacciones de inventarios{% endblock %}
+
+{% block customHead %}
+    <link href="{% static 'codeBackEnd/admin/assets/dataTables/css/dataTables.bootstrap4.css' %}" rel="stylesheet"  type="text/css"/>
+{% endblock %}
+
+{% block customCss %}
+    <style></style>
+{% endblock %}
+
+{% block content %}
+    <form action="" id="formAdd" method="post" enctype="multipart/form-data" class="row ">
+        {% csrf_token %}
+
+        <div class="form-group col-md-12"> {% comment %} nombre {% endcomment %}
+            {{ form.nombre.label_tag }}
+            {{ form.nombre }}
+            {{ form.nombre.errors }}
+        </div>
+
+        <div class="form-group col-md-12 pr-0">
+            <div class="row col-md-12 pr-0">
+                <div class="text-center col-12 order-2 text-sm-left order-sm-1 col-sm-6 p-sm-0">
+                    <a href="{% url 'Categorias:Base' %}" type="button" class="btn btn-light"><i class="fas fa-chevron-left"></i> Volver al listado</a>
+                </div>
+                <div class="text-center col-12 mb-2 order-1 text-sm-right order-sm-2 mb-sm-0 col-sm-6 p-sm-0">
+                    <button type="submit" class="btn btn-light">
+                        <i class="far fa-save"></i> Guardar categoría
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+{% endblock %}
+
+{% block customJs %}
+    <script src="{% static 'categorias/assets/js/validar.js' %}"></script>
+{% endblock %}

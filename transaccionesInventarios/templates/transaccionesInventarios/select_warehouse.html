@@ -1,0 +1,84 @@
+{% extends 'codeBackEnd/base.html' %}
+{% load humanize %}
+{% load static %}
+{% load codeBackEnd_extras %}
+{% block title %}Transacciones de inventarios{% endblock %}
+{% block tituloSeccion %}<img class="img-titulo" src="{% static 'codeBackEnd/admin/img/png/checklists.png' %}"> Selección de bodega{% endblock %}
+
+{% block customHead %}
+    <link href="{% static 'codeBackEnd/admin/assets/dataTables/css/dataTables.bootstrap4.css' %}" rel="stylesheet"  type="text/css"/>
+{% endblock %}
+
+{% block customCss %}
+    <style>
+        .customCard{
+            background: rgba(0,0,0,.2) !important;
+        }
+
+        .icono-card{
+            background: #00193A;
+            border-radius: 4px;
+        }
+
+        .card-stats{
+            background: rgba(0,0,0,0.2) !important;
+        }
+        .card-stats:hover{
+            background: rgba(0,0,0,0.4) !important;
+            text-decoration: none;
+        }
+
+        @media(max-width: 575px){
+            .card-stats .col-stats {
+                display: block !important;
+            }
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-12 row row-card-no-pd">
+
+            {% for bodega in bodegas %}
+                <div class="col-12 col-sm-6 col-md-6 mb-2">
+                    {% if accion == 1 %}
+                    <a class="card card-stats card-round" href="{% url 'TransaccionesInv:AddInventory' pk=bodega.id %}">
+                    {% else %}
+                    <a class="card card-stats card-round" href="{% url 'TransaccionesInv:DeductInventory' pk=bodega.id %}">
+                    {% endif %}
+                        <div class="card-body ">
+                            <div class="row">
+                                <div class="col-sm-5">
+                                    <div class="icon-big text-center icono-card">
+                                        <img class="img-titulo" src="{% static 'codeBackEnd/admin/img/png/inventory.png' %}">
+                                    </div>
+                                </div>
+                                <div class="col-sm-7 col-stats">
+                                    <div class="numbers">
+                                        <h4 class="card-title text-justify">{{bodega.nombre}}</h4>
+                                        <p class="text-justify text-white">{{bodega.observacion}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            {% endfor %}
+
+        </div>
+        
+        <div class="form-group col-md-12 pr-0">
+            <div class="row col-md-12 pr-0">
+                <div class="text-center col-12 order-2 text-sm-left order-sm-1 col-sm-6 p-sm-0">
+                    <a href="{% url 'TransaccionesInv:Base' %}" type="button" class="btn btn-light"><i class="fas fa-chevron-left"></i> Volver al listado</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block customJs %}
+    <script>
+    </script>
+{% endblock %}

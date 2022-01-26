@@ -8,5 +8,6 @@ inventarios_patterns = ([
     path('edit/<int:pk>',   modelViews.UpdateView.as_view(),  name="Edit"),
     path('del/<int:pk>',    modelViews.DeleteView.as_view(),  name="Delete"),
     path('search',          modelViews.Search,                name='Search'),
-    path('getProduct',      modelViews.GetProduct,                name='Search'),
+    path('getProduct',      modelViews.GetProduct,            name='GetProductAjax'),
+    path('addProduct',      modelViews.AddProduct,            name='AddProductAjax'),
 ], "Inventarios")
