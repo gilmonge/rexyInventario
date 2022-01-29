@@ -30,12 +30,16 @@
                 display: block !important;
             }
         }
+
+        body[data-background-color=dark] .row-card-no-pd [class*=col] .card:before {
+            background: rgba(181,181,181,.0)!important;
+        }
     </style>
 {% endblock %}
 
 {% block content %}
     <div class="row">
-        <div class="col-md-12 row row-card-no-pd">
+        <div class="col-md-12 row row-card-no-pd pb-0 mb-0">
             <div class="col-12 col-sm-6 col-md-6 mb-2">
                 <a class="card card-stats card-round" href="{% url 'TransaccionesInv:Add' %}">
                     <div class="card-body ">
@@ -75,8 +79,12 @@
             </div>
         </div>
 
+        <div class="col-md-12 ">
+            <hr style="border-top: 1px solid #FFD92E !important;"/>
+        </div>
+
         <div class="col-md-12 row row-card-no-pd">
-            <div class="col-6 col-sm-6 col-md-3 mb-2">
+            <div class="col-6 col-sm-6 col-md-6 mb-2">
                 <a class="card card-stats card-round" href="{% url 'Categorias:Base' %}">
                     <div class="card-body ">
                         <div class="row">
@@ -95,7 +103,7 @@
                 </a>
             </div>
 
-            <div class="col-6 col-sm-6 col-md-3 mb-2">
+            <div class="col-6 col-sm-6 col-md-6 mb-2">
                 <a class="card card-stats card-round" href="{% url 'Inventarios:Base' %}">
                     <div class="card-body ">
                         <div class="row">
@@ -114,7 +122,7 @@
                 </a>
             </div>
 
-            <div class="col-6 col-sm-6 col-md-3 mb-2">
+            <div class="col-6 col-sm-6 col-md-6 mb-2">
                 <a class="card card-stats card-round" href="{% url 'Bodegas:Base' %}">
                     <div class="card-body">
                         <div class="row">
@@ -133,7 +141,7 @@
                 </a>
             </div>
 
-            <div class="col-6 col-sm-6 col-md-3 mb-2">
+            <div class="col-6 col-sm-6 col-md-6 mb-2">
                 <a class="card card-stats card-round" href="{% url 'Proveedores:Base' %}">
                     <div class="card-body">
                         <div class="row">
