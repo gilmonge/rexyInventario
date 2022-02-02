@@ -63,7 +63,7 @@ def Search(request):
     filtroNombre = request.GET.get('nombre', '')
     filtroIdentificacion = request.GET.get('identificacion', '')
 
-    # trae los Proveedores relacionados al comercio
+    # trae los Proveedores relacionados
     filtro_list = []
 
     if filtroNombre != '' and filtroNombre != None:

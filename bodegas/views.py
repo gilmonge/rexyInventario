@@ -64,7 +64,7 @@ def Search(request):
     filtroNombre = request.GET.get('nombre', '')
     filtroResponsable = request.GET.get('responsable', '')
 
-    # trae los Categorias relacionados al comercio
+    # trae los Bodegas relacionados
     filtro_list = []
     print(filtroNombre)
 

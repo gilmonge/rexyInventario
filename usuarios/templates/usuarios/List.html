@@ -2,9 +2,8 @@
 {% load humanize %}
 {% load static %}
 {% load codeBackEnd_extras %}
-{% load usuarios_extras %}
-{% block title %}Bodegas{% endblock %}
-{% block tituloSeccion %}<img class="img-titulo" src="{% static 'codeBackEnd/admin/img/png/inventory.png' %}"> Bodegas disponibles{% endblock %}
+{% block title %}Usuarios{% endblock %}
+{% block tituloSeccion %}<img class="img-titulo" src="{% static 'codeBackEnd/admin/img/png/check-list.png' %}"> Usuarios{% endblock %}
 
 {% block customHead %}
     <link href="{% static 'codeBackEnd/admin/assets/dataTables/css/dataTables.bootstrap4.css' %}" rel="stylesheet"  type="text/css"/>
@@ -17,13 +16,13 @@
 
 {% block content %}
     <div class="col-md-12 p-0">
-        <a href="{% url 'Bodegas:Add' %}" type="button" class="btn btn-light mb-3"><i class="fas fa-plus text-success"></i> Agregar categoría</a>
+        <a href="{% url 'Usuarios:Add' %}" type="button" class="btn btn-light mb-3"><i class="fas fa-plus text-success"></i> Agregar usuarios</a>
         <button type="button" class="btn btn-light mb-3 ml-1" data-toggle="modal" data-target="#searchModal">
             <i class="fas fa-search text-info"></i> Buscar
         </button>
 
-        {% if 'nombre' in request.GET %}
-            <a href="{% url 'Bodegas:Base' %}" type="button" class="btn btn-light mb-3 ml-1"><i class="fas fa-eraser text-danger"></i> Quitar búsqueda</a>
+        {% if 'nombre' in request.GET or 'email' in request.GET %}
+            <a href="{% url 'Usuarios:Base' %}" type="button" class="btn btn-light mb-3 ml-1"><i class="fas fa-eraser text-danger"></i> Quitar búsqueda</a>
         {% endif %}
     </div>
 
@@ -49,8 +48,7 @@
                 <thead>
                     <tr>
                         <th style="text-align: center;">Nombre</th>
-                        <th style="text-align: center;">Responsable</th>
-                        <th style="text-align: center;">Observación</th>
+                        <th style="text-align: center;">Email</th>
                         <th style="text-align: center;">
                             <a href="#" title="Haga clic sobre el icono para editar la fila."><i class='fa fa-info text-white'></i></a>
                         </th>
@@ -62,11 +60,10 @@
                 <tbody>
                     {% for linea in page_obj %}
                         <tr>
-                            <td style="text-align: center;">{{ linea.nombre }}</td>
-                            <td style="text-align: center;">{{linea.responsable.first_name}} {{ linea.responsable.last_name }}</td>
-                            <td>{{ linea.observacion }}</td>
-                            <td style="text-align: center;"><a href="{% url 'Bodegas:Edit' pk=linea.id %}" class="btn btn-primary"><i class="fas fa-pencil-alt fa-lg"></i> Editar</a></td>
-                            {% comment %} <td style="text-align: center;"><a href="{% url 'Bodegas:Delete' pk=linea.id %}" class="btn btn-danger"><i class="far fa-trash-alt"></i> Borrar</a></td> {% endcomment %}
+                            <td style="text-align: center;">{{linea.first_name}} {{linea.last_name}}</td>
+                            <td style="text-align: center;">{{linea.email}}</td>
+                            <td style="text-align: center;"><a href="{% url 'Usuarios:Edit' pk=linea.id %}" class="btn btn-primary"><i class="fas fa-pencil-alt fa-lg"></i> Editar</a></td>
+                            {% comment %} <td style="text-align: center;"><a href="{% url 'Categorias:Delete' pk=linea.id %}" class="btn btn-danger"><i class="far fa-trash-alt"></i> Borrar</a></td> {% endcomment %}
                         </tr>
                     {% endfor%}
                 </tbody>
@@ -134,13 +131,34 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-body">
-                    <form action="{% url 'Bodegas:Search' %}" id="formSearchName" method="get" enctype="multipart/form-data" class="row ">
+                    <form action="{% url 'Usuarios:Search' %}" id="formSearchName" method="get" enctype="multipart/form-data" class="row ">
                         <div class="form-group col-md-12"> {% comment %} nombre {% endcomment %}
-                            <label for="id_nombre">Nombre:</label>
+                            <label for="id_tipoFiltro">Buscar por:</label>
+                            <select id="id_tipoFiltro" name="tipoFiltro" class="selectpicker w-100">
+                                {% if 'tipoFiltro' in request.GET %}
+                                    {% if request.GET.tipoFiltro|to_int == 1 %}
+                                        <option value="1" selected>Nombre</option> 
+                                    {% else %}
+                                        <option value="1">Nombre</option> 
+                                    {% endif %}
+
+                                    {% if request.GET.tipoFiltro|to_int == 2 %}
+                                        <option value="2" selected>Apellido</option> 
+                                    {% else %}
+                                        <option value="2">Apellido</option> 
+                                    {% endif %}
+                                {% else %}
+                                    <option value="1">Nombre</option>
+                                    <option value="2">Apellido</option>
+                                {% endif %}
+                            </select>
+                        </div>
+                        <div class="form-group col-md-12"> {% comment %} nombre {% endcomment %}
+                            <label for="id_nombre">Nombre o apellido:</label>
                             {% if 'nombre' in request.GET %}
-                                <input type="text" name="nombre" class="form-control" placeholder="Nombre" maxlength="100" required="" value="{{request.GET.nombre}}">
+                                <input type="text" name="nombre" class="form-control" placeholder="Nombre o apellido" maxlength="100" required="" value="{{request.GET.nombre}}">
                             {% else %}
-                                <input type="text" name="nombre" class="form-control" placeholder="Nombre" maxlength="100" required="">
+                                <input type="text" name="nombre" class="form-control" placeholder="Nombre o apellido" maxlength="100" required="">
                             {% endif %}
                         </div>
                         <div class="col-md-12 text-right">
@@ -149,30 +167,18 @@
                             </button>
                         </div>
                     </form>
-
-                    <form action="{% url 'Bodegas:Search' %}" method="get" enctype="multipart/form-data" class="row ">
+                    <form action="{% url 'Usuarios:Search' %}" id="formSearchName" method="get" enctype="multipart/form-data" class="row ">
                         <div class="form-group col-md-12"> {% comment %} nombre {% endcomment %}
-                            <label for="id_nombre">Responsable:</label>
-                            <div class="selectgroup w-100">
-                                <select id="id_responsable" name="responsable" class="selectpicker w-100" data-live-search="true">
-                                    {% get_Usuarios_list as usuarios %}
-                                    {% for usuario in usuarios %}
-                                        {% if 'responsable' in request.GET %}
-                                            {% if usuario.id|to_int == request.GET.responsable|to_int %}
-                                                <option value="{{ usuario.id }}" selected>{{ usuario.first_name }} {{ usuario.last_name }}</option>
-                                            {% else %}
-                                                <option value="{{ usuario.id }}">{{ usuario.first_name }} {{ usuario.last_name }}</option>
-                                            {% endif %}
-                                        {% else %}
-                                            <option value="{{ usuario.id }}">{{ usuario.first_name }} {{ usuario.last_name }}</option>
-                                        {% endif %}
-                                    {% endfor%}
-                                </select>
-                            </div>
+                            <label for="id_email">Email:</label>
+                            {% if 'email' in request.GET %}
+                                <input type="text" name="email" class="form-control" placeholder="Email" maxlength="100" required="" value="{{request.GET.email}}">
+                            {% else %}
+                                <input type="text" name="email" class="form-control" placeholder="Email" maxlength="100" required="">
+                            {% endif %}
                         </div>
                         <div class="col-md-12 text-right">
                             <button type="submit" class="btn btn-light">
-                                <i class="fas fa-search text-info"></i> Buscar por responsable
+                                <i class="fas fa-search text-info"></i> Buscar por email
                             </button>
                         </div>
                     </form>
@@ -186,12 +192,12 @@
 {% endblock %}
 
 {% block customJs %}
-    <script src="{% static 'bodegas/assets/js/validar.js' %}"></script>
+    <script src="{% static 'categorias/assets/js/validar.js' %}"></script>
     <script>
         {% if 'created' in request.GET %}
             swal({
                 title: "Realizado",
-                text: "Se ha creado la categoría",
+                text: "Se ha creado el usuario",
                 icon: "success",
                 buttons: {
                     confirm: {

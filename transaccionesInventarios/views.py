@@ -83,7 +83,7 @@ def Search(request):
     responsable = request.GET.get('responsable', '')
     transaccion_resp = request.GET.get('transaccion_resp', '')
 
-    # trae los Transacciones relacionados al comercio
+    # trae los Transacciones relacionados
     filtro_list = []
 
     if (fecha_inicio != '' and fecha_inicio != None) and (fecha_fin != '' and fecha_fin != None) and (transaccion_fecha != '' and transaccion_fecha != None):

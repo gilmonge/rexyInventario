@@ -90,6 +90,13 @@
                                 </a>
                             </li>
 
+                            <li class="nav-item">
+                                <a href="{% url 'Usuarios:Base' %}">
+                                    <img src="{% static 'codeBackEnd/admin/img/png/group.png' %}">
+                                    <p>Usuarios</p>
+                                </a>
+                            </li>
+
                             {% comment %} {% if request.session.comercioId is not None %}
                                 {% if request.session.comercio_idplan != 0 %}
                                     <li class="nav-item">

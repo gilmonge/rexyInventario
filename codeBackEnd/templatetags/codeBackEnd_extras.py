@@ -39,11 +39,3 @@ def to_int(value):
     if value is '':
         return int(1)
     return int(value)
-
-@register.simple_tag
-def get_Usuarios_list():
-    return User.objects.all()
-
-@register.simple_tag
-def get_Usuario(pk):
-    return User.objects.filter(pk = pk)[0]

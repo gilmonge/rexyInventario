@@ -1,0 +1,65 @@
+{% extends 'codeBackEnd/base.html' %}
+{% load static %}
+{% block title %}Nuevo usuario{% endblock %}
+{% block tituloSeccion %}<img class="img-titulo" src="{% static 'codeBackEnd/admin/img/png/check-list.png' %}"> Nuevo usuario{% endblock %}
+
+{% block customHead %}
+    <link href="{% static 'codeBackEnd/admin/assets/dataTables/css/dataTables.bootstrap4.css' %}" rel="stylesheet"  type="text/css"/>
+{% endblock %}
+
+{% block customCss %}
+    <style></style>
+{% endblock %}
+
+{% block content %}
+    <form action="{% url 'Usuarios:AddUser' %}" id="formAdd" method="post" enctype="multipart/form-data" class="row ">
+        {% csrf_token %}
+
+        <div class="form-group col-md-6">
+            <label for="id_nombre">Nombre</label>
+            <input type="text" id="id_nombre" class="form-control" placeholder="Nombre" maxlength="200" name="nombre">
+        </div>
+
+        <div class="form-group col-md-6">
+            <label for="id_apellido">Apellido</label>
+            <input type="text" id="id_apellido" class="form-control" placeholder="Apellido" maxlength="200" name="apellido">
+        </div>
+
+        <div class="form-group col-md-6">
+            <label for="url">Usuario</label>
+            <input type="text" id="id_usuario" class="form-control" placeholder="Usuario" maxlength="200" name="usuario">
+        </div>
+
+        <div class="form-group col-md-6">
+            <label for="id_correo">Correo electrónico</label>
+            <input type="text" id="id_correo" class="form-control" placeholder="Correo" maxlength="200" name="correo">
+        </div>
+
+        <div class="form-group col-md-6">
+            <label for="url">Contraseña</label>
+            <input type="password" id="id_pass" class="form-control" placeholder="Nueva contraseña" maxlength="60" name="pass" >
+        </div>
+
+        <div class="form-group col-md-6">
+            <label for="id_correo">Confirmar contraseña</label>
+            <input type="password" id="id_confPass" class="form-control" placeholder="Confirmar contraseña" maxlength="60" name="confPass" >
+        </div>
+
+        <div class="form-group col-md-12 pr-0">
+            <div class="row col-md-12 pr-0">
+                <div class="text-center col-12 order-2 text-sm-left order-sm-1 col-sm-6 p-sm-0">
+                    <a href="{% url 'Usuarios:Base' %}" type="button" class="btn btn-light"><i class="fas fa-chevron-left"></i> Volver al listado</a>
+                </div>
+                <div class="text-center col-12 mb-2 order-1 text-sm-right order-sm-2 mb-sm-0 col-sm-6 p-sm-0">
+                    <button type="submit" class="btn btn-light">
+                        <i class="far fa-save"></i> Guardar usuario
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+{% endblock %}
+
+{% block customJs %}
+    <script src="{% static 'usuarios/assets/js/validar.js' %}"></script>
+{% endblock %}

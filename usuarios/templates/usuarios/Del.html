@@ -1,0 +1,28 @@
+{% extends 'codeBackEnd/base.html' %}
+{% load humanize %}
+{% load static %}
+{% block title %}Borrar categoría{% endblock %}
+{% block tituloSeccion %}<img class="img-titulo" src="{% static 'codeBackEnd/admin/img/png/check-list.png' %}"> Borrar categoría{% endblock %}
+
+{% block customHead %}
+    <link href="{% static 'codeBackEnd/admin/assets/dataTables/css/dataTables.bootstrap4.css' %}" rel="stylesheet"  type="text/css"/>
+{% endblock %}
+
+{% block customCss %}
+    <style>
+        tbody tr td{ color: #ffffff; }
+        tbody tr td a{ color: #5C9FF1; padding-left: 10px; }
+        .estado .alert{
+            background-color: rgba(255,255,255,.05);
+            margin-top: 10px;
+            padding: .8rem 1rem;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <form action="" method="post">{% csrf_token %}
+        <h2 class="text-white">¿Estás seguro de que quieres borrar "<b>{{ object }}</b>"?</h2>
+        <input type="submit"  class="btn btn-danger float-right" value="Sí, borrar" />
+    </form>
+{% endblock %}

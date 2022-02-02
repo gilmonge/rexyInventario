@@ -22,6 +22,7 @@ from categorias.urls import categorias_patterns
 from bodegas.urls import bodegas_patterns
 from proveedores.urls import proveedores_patterns
 from transaccionesInventarios.urls import transaccionesInv_patterns
+from usuarios.urls import usuarios_patterns
 
 urlpatterns = [
     path('DJAdmin/', admin.site.urls),
@@ -31,6 +32,7 @@ urlpatterns = [
 
     # Paths de Admin
     path('', include(codeBackEnd_patterns)),
+    path('usuarios/',        include(usuarios_patterns)),
 
     path('inventarios/',        include(inventarios_patterns)),
     path('categorias/',         include(categorias_patterns)),

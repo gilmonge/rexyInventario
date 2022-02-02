@@ -62,7 +62,7 @@ class UpdateView(UpdateView):
 def Search(request):
     filtroNombre = request.GET.get('nombre', '')
 
-    # trae los Categorias relacionados al comercio
+    # trae los Categorias relacionados
     filtro_list = []
 
     if filtroNombre != '' and filtroNombre != None:

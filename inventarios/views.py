@@ -69,7 +69,7 @@ def Search(request):
         filtroCodigo = request.GET.get('codigoProduto', '')
         filtroCategoria = request.GET.get('categoria', '')
 
-        # trae los productos relacionados al comercio
+        # trae los productos relacionados
         filtro_list = []
 
         if filtroNombre != '' and filtroNombre != None:

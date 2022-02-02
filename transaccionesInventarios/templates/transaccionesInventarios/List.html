@@ -2,6 +2,7 @@
 {% load humanize %}
 {% load static %}
 {% load codeBackEnd_extras %}
+{% load usuarios_extras %}
 {% block title %}Transacciones de inventarios{% endblock %}
 {% block tituloSeccion %}<img class="img-titulo" src="{% static 'codeBackEnd/admin/img/png/transaction-white.png' %}"> Transacciones de inventarios | Entradas y salidas{% endblock %}
 
@@ -86,7 +87,7 @@
             <i class="fas fa-search text-info"></i> Buscar
         </button>
 
-        {% if 'nombre' in request.GET %}
+        {% if 'fecha_inicio' in request.GET or 'responsable' in request.GET %}
             <a href="{% url 'TransaccionesInv:Base' %}" type="button" class="btn btn-light mb-3 ml-1"><i class="fas fa-eraser text-danger"></i> Quitar búsqueda</a>
         {% endif %}
     </div>

@@ -1,0 +1,228 @@
+{% extends 'codeBackEnd/base.html' %}
+{% load static %}
+{% block title %}Editar usuario{% endblock %}
+{% block tituloSeccion %}Editar usuario{% endblock %}
+
+{% block customCss %}
+    <style>
+        .nav-link {
+            color: #4a5568;
+        }
+
+        .gutters-sm {
+            margin-right: -8px;
+            margin-left: -8px;
+        }
+
+        .gutters-sm>.col, .gutters-sm>[class*=col-] {
+            padding-right: 8px;
+            padding-left: 8px;
+        }
+        .mb-3, .my-3 {
+            margin-bottom: 1rem!important;
+        }
+
+        .bg-gray-300 {
+            background-color: #e2e8f0;
+        }
+        .h-100 {
+            height: 100%!important;
+        }
+        .shadow-none {
+            box-shadow: none!important;
+        }
+
+        .tab-config a.active, .tab-config a:hover{
+            background: #011128 !important;
+            color: #fff !important;
+            border: 1px #011128 !important;
+            border-radius: 0px !important;
+        }
+        
+        .tab-config a.active .svg-menu, .tab-config a:hover .svg-menu{
+            filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(288deg) brightness(102%) contrast(102%);
+        }
+
+        .tab-config a {
+            background: #fff !important;
+            color: #011128 !important;
+            border: 1px #fff !important;
+            border-radius: 0px !important;
+        }
+
+        .tab-config-lateral a{
+            text-align: left !important;
+            padding-left: 15px !important;
+        }
+    </style>
+{% endblock %}
+
+
+{% block content %}
+    <div class="container">
+        <div class="row gutters-sm">
+            <div class="col-md-4 d-none d-md-block">
+                <div class="card">
+                    <div class="card-body">
+                        <nav class="nav flex-column nav-pills nav-gap-y-1 tab-config tab-config-lateral">
+                            <a href="#profile" data-toggle="tab" class="nav-item nav-link has-icon nav-link-faded active">
+                                <img src="{% static 'codeBackEnd/admin/img/svg/user-blue.svg' %}" class="svg-menu" style="width: 40px; margin-right: 15px;">
+                                Información
+                            </a>
+                            <a href="#security" data-toggle="tab" class="nav-item nav-link has-icon nav-link-faded">
+                                <img src="{% static 'codeBackEnd/admin/img/svg/secure-shield.svg' %}" class="svg-menu" style="width: 40px; margin-right: 15px;">
+                                Seguridad
+                            </a>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header border-bottom mb-3 d-flex d-md-none" style="padding: 1rem 0.6rem; border: 0px !important;">
+                        <ul class="nav nav-tabs card-header-tabs nav-gap-x-1 tab-config" role="tablist">
+                            <li class="nav-item">
+                                <a href="#profile" data-toggle="tab" class="nav-link has-icon active">
+                                    <img src="{% static 'codeBackEnd/admin/img/svg/user-blue.svg' %}" class="svg-menu" style="width: 40px;">
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#security" data-toggle="tab" class="nav-link has-icon">
+                                    <img src="{% static 'codeBackEnd/admin/img/svg/secure-shield.svg' %}" class="svg-menu" style="width: 40px;">
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="card-body tab-content" style="background: rgba(255,255,255,.07);">
+                        <div class="tab-pane active" id="profile">
+                            <h6 class="text-white">INFORMACIÓN DE PERFIL</h6>
+                            <hr>
+                            <form action="{% url 'Usuarios:Update' pk=usuario.id %}" method="post">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <label for="fullName">Nombre</label>
+                                    <input type="text" id="idnombre" class="form-control" placeholder="Nombre" maxlength="200" value="{{usuario.first_name}}" name="nombre">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="bio">Apellido</label>
+                                    <input type="text" id="idapellido" class="form-control" placeholder="Apellido" maxlength="200" value="{{usuario.last_name}}" name="apellido">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="url">Usuario</label>
+                                    <input type="text" class="form-control" value="{{usuario.username}}" readonly>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="location">Correo electrónico</label>
+                                    <input type="text" class="form-control" value="{{usuario.email}}" readonly>
+                                </div>
+
+                                <div class="form-group small text-warning">
+                                    El usuario y correo electrónico no pueden ser modificados
+                                </div>
+
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-primary">Actualizar</button>
+                                </div>
+
+                            </form>
+                        </div>
+
+                        <div class="tab-pane" id="security">
+                            <h6 class="text-white">CONFIGURACIONES DE SEGURIDAD</h6>
+                            <hr>
+                            <form action="{% url 'Usuarios:UpdatePass' pk=usuario.id %}" method="post">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <label for="fullName">Nueva contraseña:</label>
+                                    <input type="password" id="idpass" class="form-control" placeholder="Nueva contraseña" maxlength="60" name="pass" >
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="bio">Confirmar contraseña:</label>
+                                    <input type="password" id="idconfPass" class="form-control" placeholder="Confirmar contraseña" maxlength="60" name="confPass" >
+                                </div>
+                                <div class="form-group small text-warning">
+                                    Guarda la nueva contraseña en un lugar seguro
+                                </div>
+
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-primary">Actualizar</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group col-md-12 pr-0">
+            <div class="row col-md-12 pr-0">
+                <div class="text-center col-12 order-2 text-sm-left order-sm-1 col-sm-6 p-sm-0">
+                    <a href="{% url 'Usuarios:Base' %}" type="button" class="btn btn-light"><i class="fas fa-chevron-left"></i> Volver al listado</a>
+                </div>
+                <div class="text-center col-12 mb-2 order-1 text-sm-right order-sm-2 mb-sm-0 col-sm-6 p-sm-0"></div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block customJs %}
+    <script>
+        {% if 'ok_perfil' in request.GET %}
+            swal({
+                title: "Realizado",
+                text: "Se ha actualizado el usuario",
+                icon: "success",
+                buttons: {
+                    confirm: {
+                        text: "OK",
+                        value: true,
+                        visible: true,
+                        className: "btn btn-success",
+                        closeModal: true
+                    }
+                }
+            });
+        {% endif %}
+
+        {% if 'ok_pass' in request.GET %}
+            swal({
+                title: "Realizado",
+                text: "Se ha actualizado la contraseña",
+                icon: "success",
+                buttons: {
+                    confirm: {
+                        text: "OK",
+                        value: true,
+                        visible: true,
+                        className: "btn btn-success",
+                        closeModal: true
+                    }
+                }
+            });
+        {% endif %}
+
+        {% if 'error' in request.GET %}
+            swal({
+                title: "Realizado",
+                text: "Se ha actualizado la contraseña",
+                icon: "error",
+                buttons: {
+                    confirm: {
+                        text: "OK",
+                        value: true,
+                        visible: true,
+                        className: "btn btn-danger",
+                        closeModal: true
+                    }
+                }
+            });
+        {% endif %}
+
+    </script>
+{% endblock %}

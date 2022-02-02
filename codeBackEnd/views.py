@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.urls import reverse_lazy, reverse
 from django.contrib.auth import login, authenticate
+from usuarios.models import Perfil
 
 # Create your views here.
 def home(request):
@@ -10,6 +11,12 @@ def home(request):
 def dashboard(request):
     if request.user.is_authenticated:
         datos = {}
+
+        """ Comprueba que exite el perfil del usuario y sino lo crea """
+        perfil = Perfil.objects.get_or_create(usuario=request.user)[0]
+        datos["perfil"] = perfil
+        """ Comprueba que exite el perfil del usuario y sino lo crea """
+
         return render(request, "codeBackEnd/dashboard.html", datos)
     else:
         return redirect('login')
