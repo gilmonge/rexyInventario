@@ -1,6 +1,7 @@
 {% extends 'codeBackEnd/base.html' %}
 {% load static %}
 {% load codeBackEnd_extras %}
+{% load usuarios_extras %}
 {% block title %}Dashboard{% endblock %}
 {% block tituloSeccion %}
     Escritorio
@@ -39,126 +40,141 @@
 
 {% block content %}
     <div class="row">
-        <div class="col-md-12 row row-card-no-pd pb-0 mb-0">
-            <div class="col-12 col-sm-6 col-md-6 mb-2">
-                <a class="card card-stats card-round" href="{% url 'TransaccionesInv:Add' %}">
-                    <div class="card-body ">
-                        <div class="row">
-                            <div class="col-sm-5">
-                                <div class="icon-big text-center icono-card">
-                                    <img class="img-titulo" src="{% static 'codeBackEnd/admin/img/png/import.png' %}">
+        {% get_PermisoUsuario request.user.id "transaccionesInventarios.add_transacciones" as Permiso %}
+        {% if Permiso %}
+            <div class="col-md-12 row row-card-no-pd pb-0 mb-0">
+                <div class="col-12 col-sm-6 col-md-6 mb-2">
+                    <a class="card card-stats card-round" href="{% url 'TransaccionesInv:Add' %}">
+                        <div class="card-body ">
+                            <div class="row">
+                                <div class="col-sm-5">
+                                    <div class="icon-big text-center icono-card">
+                                        <img class="img-titulo" src="{% static 'codeBackEnd/admin/img/png/import.png' %}">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-sm-7 col-stats">
-                                <div class="numbers">
-                                    <h4 class="card-title text-center">Registrar entrada</h4>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-            </div>
-
-            <div class="col-12 col-sm-6 col-md-6 mb-2">
-                <a class="card card-stats card-round" href="{% url 'TransaccionesInv:Deduct' %}">
-                    <div class="card-body ">
-                        <div class="row">
-                            <div class="col-sm-5">
-                                <div class="icon-big text-center icono-card">
-                                    <img class="img-titulo" src="{% static 'codeBackEnd/admin/img/png/export.png' %}">
-                                </div>
-                            </div>
-                            <div class="col-sm-7 col-stats">
-                                <div class="numbers">
-                                    <h4 class="card-title text-center">Registrar salida</h4>
+                                <div class="col-sm-7 col-stats">
+                                    <div class="numbers">
+                                        <h4 class="card-title text-center">Registrar entrada</h4>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </a>
-            </div>
-        </div>
+                    </a>
+                </div>
 
-        <div class="col-md-12 ">
-            <hr style="border-top: 1px solid #FFD92E !important;"/>
-        </div>
+                <div class="col-12 col-sm-6 col-md-6 mb-2">
+                    <a class="card card-stats card-round" href="{% url 'TransaccionesInv:Deduct' %}">
+                        <div class="card-body ">
+                            <div class="row">
+                                <div class="col-sm-5">
+                                    <div class="icon-big text-center icono-card">
+                                        <img class="img-titulo" src="{% static 'codeBackEnd/admin/img/png/export.png' %}">
+                                    </div>
+                                </div>
+                                <div class="col-sm-7 col-stats">
+                                    <div class="numbers">
+                                        <h4 class="card-title text-center">Registrar salida</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-md-12 ">
+                <hr style="border-top: 1px solid #FFD92E !important;"/>
+            </div>
+        {% endif %}
 
         <div class="col-md-12 row row-card-no-pd">
-            <div class="col-6 col-sm-6 col-md-6 mb-2">
-                <a class="card card-stats card-round" href="{% url 'Categorias:Base' %}">
-                    <div class="card-body ">
-                        <div class="row">
-                            <div class="col-sm-5">
-                                <div class="icon-big text-center icono-card">
-                                    <img class="img-titulo" src="{% static 'codeBackEnd/admin/img/png/check-list.png' %}">
+            {% get_PermisoUsuario request.user.id "categorias.view_categorias" as Permiso %}
+            {% if Permiso %}
+                <div class="col-6 col-sm-6 col-md-6 mb-2">
+                    <a class="card card-stats card-round" href="{% url 'Categorias:Base' %}">
+                        <div class="card-body ">
+                            <div class="row">
+                                <div class="col-sm-5">
+                                    <div class="icon-big text-center icono-card">
+                                        <img class="img-titulo" src="{% static 'codeBackEnd/admin/img/png/check-list.png' %}">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-sm-7 col-stats">
-                                <div class="numbers">
-                                    <h4 class="card-title text-center">Categorías</h4>
+                                <div class="col-sm-7 col-stats">
+                                    <div class="numbers">
+                                        <h4 class="card-title text-center">Categorías</h4>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </a>
-            </div>
+                    </a>
+                </div>
+            {% endif %}
 
-            <div class="col-6 col-sm-6 col-md-6 mb-2">
-                <a class="card card-stats card-round" href="{% url 'Inventarios:Base' %}">
-                    <div class="card-body ">
-                        <div class="row">
-                            <div class="col-sm-5">
-                                <div class="icon-big text-center icono-card">
-                                    <img class="img-titulo" src="{% static 'codeBackEnd/admin/img/png/box.png' %}">
+            {% get_PermisoUsuario request.user.id "inventarios.view_productos" as Permiso %}
+            {% if Permiso %}
+                <div class="col-6 col-sm-6 col-md-6 mb-2">
+                    <a class="card card-stats card-round" href="{% url 'Inventarios:Base' %}">
+                        <div class="card-body ">
+                            <div class="row">
+                                <div class="col-sm-5">
+                                    <div class="icon-big text-center icono-card">
+                                        <img class="img-titulo" src="{% static 'codeBackEnd/admin/img/png/box.png' %}">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-sm-7 col-stats">
-                                <div class="numbers">
-                                    <h4 class="card-title text-center">Productos</h4>
+                                <div class="col-sm-7 col-stats">
+                                    <div class="numbers">
+                                        <h4 class="card-title text-center">Productos</h4>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </a>
-            </div>
+                    </a>
+                </div>
+            {% endif %}
 
-            <div class="col-6 col-sm-6 col-md-6 mb-2">
-                <a class="card card-stats card-round" href="{% url 'Bodegas:Base' %}">
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-sm-5">
-                                <div class="icon-big text-center icono-card">
-                                    <img class="img-titulo" src="{% static 'codeBackEnd/admin/img/png/inventory.png' %}">
+            {% get_PermisoUsuario request.user.id "bodegas.view_bodegas" as Permiso %}
+            {% if Permiso %}
+                <div class="col-6 col-sm-6 col-md-6 mb-2">
+                    <a class="card card-stats card-round" href="{% url 'Bodegas:Base' %}">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm-5">
+                                    <div class="icon-big text-center icono-card">
+                                        <img class="img-titulo" src="{% static 'codeBackEnd/admin/img/png/inventory.png' %}">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-sm-7 col-stats">
-                                <div class="numbers">
-                                    <h4 class="card-title text-center">Bodegas</h4>
+                                <div class="col-sm-7 col-stats">
+                                    <div class="numbers">
+                                        <h4 class="card-title text-center">Bodegas</h4>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </a>
-            </div>
+                    </a>
+                </div>
+            {% endif %}
 
-            <div class="col-6 col-sm-6 col-md-6 mb-2">
-                <a class="card card-stats card-round" href="{% url 'Proveedores:Base' %}">
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-sm-5">
-                                <div class="icon-big text-center icono-card">
-                                    <img class="img-titulo" src="{% static 'codeBackEnd/admin/img/png/shop.png' %}">
+            {% get_PermisoUsuario request.user.id "proveedores.view_proveedores" as Permiso %}
+            {% if Permiso %}
+                <div class="col-6 col-sm-6 col-md-6 mb-2">
+                    <a class="card card-stats card-round" href="{% url 'Proveedores:Base' %}">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm-5">
+                                    <div class="icon-big text-center icono-card">
+                                        <img class="img-titulo" src="{% static 'codeBackEnd/admin/img/png/shop.png' %}">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-sm-7 col-stats">
-                                <div class="numbers ">
-                                    <h4 class="card-title text-center">Proveedores</h4>
+                                <div class="col-sm-7 col-stats">
+                                    <div class="numbers ">
+                                        <h4 class="card-title text-center">Proveedores</h4>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </a>
-            </div>
+                    </a>
+                </div>
+            {% endif %}
 
         </div>
     </div>

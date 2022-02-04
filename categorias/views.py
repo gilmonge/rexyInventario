@@ -5,6 +5,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.urls import reverse_lazy, reverse
 from .models import Categorias
 from .forms import BaseForm, FormEdit
+from usuarios.views import consultar_PermisoUsuario
 
 # Create your views here.
 class baseListView(ListView):
@@ -18,7 +19,10 @@ class baseListView(ListView):
         if self.request.user.is_authenticated == False:
             return redirect('login')
         else:
-            return super().dispatch(request, *args, *kwargs)
+            if consultar_PermisoUsuario(request, 'categorias.view_categorias'):
+                return super().dispatch(request, *args, *kwargs)
+            else:
+                return redirect('codeBackEnd:dashboard')
 
 class DeleteView(DeleteView):
     model = Categorias
@@ -29,7 +33,10 @@ class DeleteView(DeleteView):
         if self.request.user.is_authenticated == False:
             return redirect('login')
         else:
-            return super().dispatch(request, *args, *kwargs)
+            if consultar_PermisoUsuario(request, 'categorias.delete_categorias'):
+                return super().dispatch(request, *args, *kwargs)
+            else:
+                return redirect('Categorias:Base')
 
 class CreateView(CreateView):
     model = Categorias
@@ -40,7 +47,10 @@ class CreateView(CreateView):
         if self.request.user.is_authenticated == False:
             return redirect('login')
         else:
-            return super().dispatch(request, *args, *kwargs)
+            if consultar_PermisoUsuario(request, 'categorias.add_categorias'):
+                return super().dispatch(request, *args, *kwargs)
+            else:
+                return redirect('Categorias:Base')
 
     def get_success_url(self):
         return reverse_lazy('Categorias:Base') + '?created'
@@ -54,35 +64,44 @@ class UpdateView(UpdateView):
         if self.request.user.is_authenticated == False:
             return redirect('login')
         else:
-            return super().dispatch(request, *args, *kwargs)
+            if consultar_PermisoUsuario(request, 'categorias.change_categorias'):
+                return super().dispatch(request, *args, *kwargs)
+            else:
+                return redirect('Categorias:Base')
 
     def get_success_url(self):
         return reverse_lazy('Categorias:Edit', args=[self.object.id]) + '?updated'
 
 def Search(request):
-    filtroNombre = request.GET.get('nombre', '')
+    if request.user.is_authenticated:
+        if consultar_PermisoUsuario(request, 'categorias.view_categorias'):
+            filtroNombre = request.GET.get('nombre', '')
 
-    # trae los Categorias relacionados
-    filtro_list = []
+            # trae los Categorias relacionados
+            filtro_list = []
 
-    if filtroNombre != '' and filtroNombre != None:
-        filtro_list = Categorias.objects.filter(nombre__icontains=filtroNombre)
+            if filtroNombre != '' and filtroNombre != None:
+                filtro_list = Categorias.objects.filter(nombre__icontains=filtroNombre)
+            else:
+                return redirect(reverse_lazy('Categorias:Base'))
+
+            page = request.GET.get('page', 1)
+            paginator = Paginator(filtro_list, 30)
+
+            try:
+                categorias = paginator.page(page)
+            except PageNotAnInteger:
+                categorias = paginator.page(1)
+            except EmptyPage:
+                categorias = paginator.page(paginator.num_pages)
+
+            datos = {
+                'is_paginated':  True if paginator.num_pages > 1 else False,
+                'page_obj': categorias,
+            }
+
+            return render(request, "categorias/List.html", datos)
+        else:
+            return redirect('codeBackEnd:dashboard')
     else:
-        return redirect(reverse_lazy('Categorias:Base'))
-
-    page = request.GET.get('page', 1)
-    paginator = Paginator(filtro_list, 30)
-
-    try:
-        categorias = paginator.page(page)
-    except PageNotAnInteger:
-        categorias = paginator.page(1)
-    except EmptyPage:
-        categorias = paginator.page(paginator.num_pages)
-
-    datos = {
-        'is_paginated':  True if paginator.num_pages > 1 else False,
-        'page_obj': categorias,
-    }
-
-    return render(request, "categorias/List.html", datos)
+        return redirect('login')

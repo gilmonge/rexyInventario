@@ -5,6 +5,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.urls import reverse_lazy, reverse
 from .models import Bodegas
 from .forms import BaseForm, FormEdit
+from usuarios.views import consultar_PermisoUsuario
 
 # Create your views here.
 class baseListView(ListView):
@@ -18,7 +19,10 @@ class baseListView(ListView):
         if self.request.user.is_authenticated == False:
             return redirect('login')
         else:
-            return super().dispatch(request, *args, *kwargs)
+            if consultar_PermisoUsuario(request, 'bodegas.view_bodegas'):
+                return super().dispatch(request, *args, *kwargs)
+            else:
+                return redirect('codeBackEnd:dashboard')
 
 class DeleteView(DeleteView):
     model = Bodegas
@@ -29,7 +33,10 @@ class DeleteView(DeleteView):
         if self.request.user.is_authenticated == False:
             return redirect('login')
         else:
-            return super().dispatch(request, *args, *kwargs)
+            if consultar_PermisoUsuario(request, 'bodegas.delete_bodegas'):
+                return super().dispatch(request, *args, *kwargs)
+            else:
+                return redirect('Bodegas:Base')
 
 class CreateView(CreateView):
     model = Bodegas
@@ -40,7 +47,10 @@ class CreateView(CreateView):
         if self.request.user.is_authenticated == False:
             return redirect('login')
         else:
-            return super().dispatch(request, *args, *kwargs)
+            if consultar_PermisoUsuario(request, 'bodegas.add_bodegas'):
+                return super().dispatch(request, *args, *kwargs)
+            else:
+                return redirect('Bodegas:Base')
 
     def get_success_url(self):
         # return reverse_lazy('comercioAdmin:producto', kwargs={ 'pk': self.object.id })
@@ -55,39 +65,47 @@ class UpdateView(UpdateView):
         if self.request.user.is_authenticated == False:
             return redirect('login')
         else:
-            return super().dispatch(request, *args, *kwargs)
+            if consultar_PermisoUsuario(request, 'bodegas.change_bodegas'):
+                return super().dispatch(request, *args, *kwargs)
+            else:
+                return redirect('Bodegas:Base')
 
     def get_success_url(self):
         return reverse_lazy('Bodegas:Edit', args=[self.object.id]) + '?updated'
 
 def Search(request):
-    filtroNombre = request.GET.get('nombre', '')
-    filtroResponsable = request.GET.get('responsable', '')
+    if request.user.is_authenticated:
+        if consultar_PermisoUsuario(request, 'bodegas.view_bodegas'):
+            filtroNombre = request.GET.get('nombre', '')
+            filtroResponsable = request.GET.get('responsable', '')
 
-    # trae los Bodegas relacionados
-    filtro_list = []
-    print(filtroNombre)
+            # trae los Bodegas relacionados
+            filtro_list = []
 
-    if filtroNombre != '' and filtroNombre != None:
-        filtro_list = Bodegas.objects.filter(nombre__icontains=filtroNombre)
-    elif filtroResponsable != '' and filtroResponsable != None:
-        filtro_list = Bodegas.objects.filter(responsable=filtroResponsable)
+            if filtroNombre != '' and filtroNombre != None:
+                filtro_list = Bodegas.objects.filter(nombre__icontains=filtroNombre)
+            elif filtroResponsable != '' and filtroResponsable != None:
+                filtro_list = Bodegas.objects.filter(responsable=filtroResponsable)
+            else:
+                return redirect(reverse_lazy('Bodegas:Base'))
+
+            page = request.GET.get('page', 1)
+            paginator = Paginator(filtro_list, 30)
+
+            try:
+                bodegas = paginator.page(page)
+            except PageNotAnInteger:
+                bodegas = paginator.page(1)
+            except EmptyPage:
+                bodegas = paginator.page(paginator.num_pages)
+
+            datos = {
+                'is_paginated':  True if paginator.num_pages > 1 else False,
+                'page_obj': bodegas,
+            }
+
+            return render(request, "bodegas/List.html", datos)
+        else:
+            return redirect('codeBackEnd:dashboard')
     else:
-        return redirect(reverse_lazy('Bodegas:Base'))
-
-    page = request.GET.get('page', 1)
-    paginator = Paginator(filtro_list, 30)
-
-    try:
-        bodegas = paginator.page(page)
-    except PageNotAnInteger:
-        bodegas = paginator.page(1)
-    except EmptyPage:
-        bodegas = paginator.page(paginator.num_pages)
-
-    datos = {
-        'is_paginated':  True if paginator.num_pages > 1 else False,
-        'page_obj': bodegas,
-    }
-
-    return render(request, "bodegas/List.html", datos)
+        return redirect('login')

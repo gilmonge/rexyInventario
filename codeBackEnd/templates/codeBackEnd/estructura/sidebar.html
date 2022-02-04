@@ -1,4 +1,5 @@
 {% load static %}
+{% load usuarios_extras %}
             <!-- Sidebar -->
             <div class="sidebar sidebar-style-2" data-background-color="dark2">
                         
@@ -54,48 +55,65 @@
                                 <h4 class="text-section text-white">Opciones</h4>
                             </li>
 
-                            <li class="nav-item active">
-                                <a href="{% url 'TransaccionesInv:Base' %}">
-                                    <img src="{% static 'codeBackEnd/admin/img/png/transaction.png' %}">
-                                    <p>Registrar Inv.</p>
-                                </a>
-                            </li>
+                            {% get_PermisoUsuario request.user.id "transaccionesInventarios.add_transacciones" as Permiso %}
+                            {% if Permiso %}
+                                <li class="nav-item active">
+                                    <a href="{% url 'TransaccionesInv:Base' %}">
+                                        <img src="{% static 'codeBackEnd/admin/img/png/transaction.png' %}">
+                                        <p>Registrar Inv.</p>
+                                    </a>
+                                </li>
+                            {% endif %}
 
+                            {% get_PermisoUsuario request.user.id "categorias.view_categorias" as Permiso %}
+                            {% if Permiso %}
+                                <li class="nav-item">
+                                    <a href="{% url 'Categorias:Base' %}">
+                                        <img src="{% static 'codeBackEnd/admin/img/png/check-list.png' %}">
+                                        <p>Categorías</p>
+                                    </a>
+                                </li>
+                            {% endif %}
 
-                            <li class="nav-item">
-                                <a href="{% url 'Categorias:Base' %}">
-                                    <img src="{% static 'codeBackEnd/admin/img/png/check-list.png' %}">
-                                    <p>Categorías</p>
-                                </a>
-                            </li>
+                            {% get_PermisoUsuario request.user.id "inventarios.view_productos" as Permiso %}
+                            {% if Permiso %}
+                                <li class="nav-item">
+                                    <a href="{% url 'Inventarios:Base' %}">
+                                        <img src="{% static 'codeBackEnd/admin/img/png/box.png' %}">
+                                        <p>Productos</p>
+                                    </a>
+                                </li>
+                            {% endif %}
 
-                            <li class="nav-item">
-                                <a href="{% url 'Inventarios:Base' %}">
-                                    <img src="{% static 'codeBackEnd/admin/img/png/box.png' %}">
-                                    <p>Productos</p>
-                                </a>
-                            </li>
+                            {% get_PermisoUsuario request.user.id "bodegas.view_bodegas" as Permiso %}
+                            {% if Permiso %}
+                                <li class="nav-item">
+                                    <a href="{% url 'Bodegas:Base' %}">
+                                        <img src="{% static 'codeBackEnd/admin/img/png/inventory.png' %}">
+                                        <p>Bodegas</p>
+                                    </a>
+                                </li>
+                            {% endif %}
 
-                            <li class="nav-item">
-                                <a href="{% url 'Bodegas:Base' %}">
-                                    <img src="{% static 'codeBackEnd/admin/img/png/inventory.png' %}">
-                                    <p>Bodegas</p>
-                                </a>
-                            </li>
+                            {% get_PermisoUsuario request.user.id "proveedores.view_proveedores" as Permiso %}
+                            {% if Permiso %}
+                                <li class="nav-item">
+                                    <a href="{% url 'Proveedores:Base' %}">
+                                        <img src="{% static 'codeBackEnd/admin/img/png/shop.png' %}">
+                                        <p>Proveedores</p>
+                                    </a>
+                                </li>
+                            {% endif %}
 
-                            <li class="nav-item">
-                                <a href="{% url 'Proveedores:Base' %}">
-                                    <img src="{% static 'codeBackEnd/admin/img/png/shop.png' %}">
-                                    <p>Proveedores</p>
-                                </a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a href="{% url 'Usuarios:Base' %}">
-                                    <img src="{% static 'codeBackEnd/admin/img/png/group.png' %}">
-                                    <p>Usuarios</p>
-                                </a>
-                            </li>
+                            {% get_PermisoUsuario request.user.id "auth.view_user" as Permiso %}
+                            {% if Permiso %}
+                                <li class="nav-item">
+                                    <a href="{% url 'Usuarios:Base' %}">
+                                        <img src="{% static 'codeBackEnd/admin/img/png/group.png' %}">
+                                        <p>Usuarios</p>
+                                    </a>
+                                </li>
+                            {% endif %}
 
                             {% comment %} {% if request.session.comercioId is not None %}
                                 {% if request.session.comercio_idplan != 0 %}

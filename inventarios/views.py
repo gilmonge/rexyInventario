@@ -6,6 +6,7 @@ from django.urls import reverse_lazy, reverse
 from django.http import JsonResponse
 from .models import Productos
 from .forms import BaseForm, FormEdit
+from usuarios.views import consultar_PermisoUsuario
 import json
 
 # Create your views here.
@@ -20,7 +21,10 @@ class baseListView(ListView):
         if self.request.user.is_authenticated == False:
             return redirect('login')
         else:
-            return super().dispatch(request, *args, *kwargs)
+            if consultar_PermisoUsuario(request, 'inventarios.view_productos'):
+                return super().dispatch(request, *args, *kwargs)
+            else:
+                return redirect('codeBackEnd:dashboard')
 
 class DeleteView(DeleteView):
     model = Productos
@@ -31,7 +35,10 @@ class DeleteView(DeleteView):
         if self.request.user.is_authenticated == False:
             return redirect('login')
         else:
-            return super().dispatch(request, *args, *kwargs)
+            if consultar_PermisoUsuario(request, 'inventarios.delete_productos'):
+                return super().dispatch(request, *args, *kwargs)
+            else:
+                return redirect('Inventarios:Base')
 
 class CreateView(CreateView):
     model = Productos
@@ -42,7 +49,10 @@ class CreateView(CreateView):
         if self.request.user.is_authenticated == False:
             return redirect('login')
         else:
-            return super().dispatch(request, *args, *kwargs)
+            if consultar_PermisoUsuario(request, 'inventarios.add_productos'):
+                return super().dispatch(request, *args, *kwargs)
+            else:
+                return redirect('Inventarios:Base')
 
     def get_success_url(self):
         # return reverse_lazy('comercioAdmin:producto', kwargs={ 'pk': self.object.id })
@@ -58,45 +68,51 @@ class UpdateView(UpdateView):
         if self.request.user.is_authenticated == False:
             return redirect('login')
         else:
-            return super().dispatch(request, *args, *kwargs)
+            if consultar_PermisoUsuario(request, 'inventarios.change_productos'):
+                return super().dispatch(request, *args, *kwargs)
+            else:
+                return redirect('Inventarios:Base')
 
     def get_success_url(self):
         return reverse_lazy('Inventarios:Edit', args=[self.object.id]) + '?updated'
 
 def Search(request):
     if request.user.is_authenticated:
-        filtroNombre = request.GET.get('nombre', '')
-        filtroCodigo = request.GET.get('codigoProduto', '')
-        filtroCategoria = request.GET.get('categoria', '')
+        if consultar_PermisoUsuario(request, 'inventarios.view_productos'):
+            filtroNombre = request.GET.get('nombre', '')
+            filtroCodigo = request.GET.get('codigoProduto', '')
+            filtroCategoria = request.GET.get('categoria', '')
 
-        # trae los productos relacionados
-        filtro_list = []
+            # trae los productos relacionados
+            filtro_list = []
 
-        if filtroNombre != '' and filtroNombre != None:
-            filtro_list = Productos.objects.filter(nombre__icontains=filtroNombre)
-        elif filtroCodigo != '' and filtroCodigo != None:
-            filtro_list = Productos.objects.filter(codigoProduto__icontains=filtroCodigo)
-        elif filtroCategoria != '' and filtroCategoria != None:
-            filtro_list = Productos.objects.filter(categoria__id=filtroCategoria)
+            if filtroNombre != '' and filtroNombre != None:
+                filtro_list = Productos.objects.filter(nombre__icontains=filtroNombre)
+            elif filtroCodigo != '' and filtroCodigo != None:
+                filtro_list = Productos.objects.filter(codigoProduto__icontains=filtroCodigo)
+            elif filtroCategoria != '' and filtroCategoria != None:
+                filtro_list = Productos.objects.filter(categoria__id=filtroCategoria)
+            else:
+                return redirect(reverse_lazy('Inventarios:Base'))
+
+            page = request.GET.get('page', 1)
+            paginator = Paginator(filtro_list, 30)
+
+            try:
+                productos = paginator.page(page)
+            except PageNotAnInteger:
+                productos = paginator.page(1)
+            except EmptyPage:
+                productos = paginator.page(paginator.num_pages)
+
+            datos = {
+                'is_paginated':  True if paginator.num_pages > 1 else False,
+                'page_obj': productos,
+            }
+
+            return render(request, "inventarios/List.html", datos)
         else:
-            return redirect(reverse_lazy('Inventarios:Base'))
-
-        page = request.GET.get('page', 1)
-        paginator = Paginator(filtro_list, 30)
-
-        try:
-            productos = paginator.page(page)
-        except PageNotAnInteger:
-            productos = paginator.page(1)
-        except EmptyPage:
-            productos = paginator.page(paginator.num_pages)
-
-        datos = {
-            'is_paginated':  True if paginator.num_pages > 1 else False,
-            'page_obj': productos,
-        }
-
-        return render(request, "inventarios/List.html", datos)
+            return redirect('codeBackEnd:dashboard')
     else:
         return redirect('login')
 

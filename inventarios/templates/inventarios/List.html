@@ -3,6 +3,7 @@
 {% load static %}
 {% load inventarios_extras %}
 {% load codeBackEnd_extras %}
+{% load usuarios_extras %}
 {% block title %}Productos{% endblock %}
 {% block tituloSeccion %}<img class="img-titulo" src="{% static 'codeBackEnd/admin/img/png/box.png' %}"> Productos disponibles{% endblock %}
 
@@ -17,7 +18,10 @@
 
 {% block content %}
     <div class="col-md-12 p-0">
-        <a href="{% url 'Inventarios:Add' %}" type="button" class="btn btn-light mb-3"><i class="fas fa-plus text-success"></i> Agregar producto</a>
+        {% get_PermisoUsuario request.user.id "inventarios.add_productos" as Permiso %}
+        {% if Permiso %}
+            <a href="{% url 'Inventarios:Add' %}" type="button" class="btn btn-light mb-3"><i class="fas fa-plus text-success"></i> Agregar producto</a>
+        {% endif %}
         <button type="button" class="btn btn-light mb-3 ml-1" data-toggle="modal" data-target="#searchModal">
             <i class="fas fa-search text-info"></i> Buscar
         </button>
@@ -59,9 +63,12 @@
                         <th style="text-align: center;">Código producto</th>
                         <th style="text-align: center;">Cantidad en existencias</th>
                         <th style="text-align: center;">Categorías</th>
-                        <th style="text-align: center;">
-                            <a href="#" title="Haga clic sobre el icono para editar la fila."><i class='fa fa-info text-white'></i></a>
-                        </th>
+                        {% get_PermisoUsuario request.user.id "inventarios.change_productos" as Permiso %}
+                        {% if Permiso %}
+                            <th style="text-align: center;">
+                                <a href="#" title="Haga clic sobre el icono para editar la fila."><i class='fa fa-info text-white'></i></a>
+                            </th>
+                        {% endif %}
                         {% comment %} <th style="text-align: center;">
                             <a href="#" title="Haga clic sobre el icono para eliminar la fila."><i class='fa fa-info'></i></a>
                         </th> {% endcomment %}
@@ -78,7 +85,10 @@
                                     {{categoria.nombre}}<br/>
                                 {% endfor %}
                             </td>
-                            <td style="text-align: center;"><a href="{% url 'Inventarios:Edit' pk=linea.id %}" class="btn btn-primary"><i class="fas fa-pencil-alt fa-lg"></i> Editar</a></td>
+                            {% get_PermisoUsuario request.user.id "inventarios.change_productos" as Permiso %}
+                            {% if Permiso %}
+                                <td style="text-align: center;"><a href="{% url 'Inventarios:Edit' pk=linea.id %}" class="btn btn-primary"><i class="fas fa-pencil-alt fa-lg"></i> Editar</a></td>
+                            {% endif %}
                             {% comment %} <td style="text-align: center;"><a href="{% url 'Inventarios:Delete' pk=linea.id %}" class="btn btn-danger"><i class="far fa-trash-alt"></i> Borrar</a></td> {% endcomment %}
                         </tr>
                     {% endfor%}

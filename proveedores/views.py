@@ -5,6 +5,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.urls import reverse_lazy, reverse
 from .models import Proveedores
 from .forms import BaseForm, FormEdit
+from usuarios.views import consultar_PermisoUsuario
 
 # Create your views here.
 class baseListView(ListView):
@@ -18,7 +19,10 @@ class baseListView(ListView):
         if self.request.user.is_authenticated == False:
             return redirect('login')
         else:
-            return super().dispatch(request, *args, *kwargs)
+            if consultar_PermisoUsuario(request, 'proveedores.view_proveedores'):
+                return super().dispatch(request, *args, *kwargs)
+            else:
+                return redirect('codeBackEnd:dashboard')
 
 class DeleteView(DeleteView):
     model = Proveedores
@@ -29,7 +33,10 @@ class DeleteView(DeleteView):
         if self.request.user.is_authenticated == False:
             return redirect('login')
         else:
-            return super().dispatch(request, *args, *kwargs)
+            if consultar_PermisoUsuario(request, 'proveedores.delete_proveedores'):
+                return super().dispatch(request, *args, *kwargs)
+            else:
+                return redirect('Proveedores:Base')
 
 class CreateView(CreateView):
     model = Proveedores
@@ -40,7 +47,10 @@ class CreateView(CreateView):
         if self.request.user.is_authenticated == False:
             return redirect('login')
         else:
-            return super().dispatch(request, *args, *kwargs)
+            if consultar_PermisoUsuario(request, 'proveedores.add_proveedores'):
+                return super().dispatch(request, *args, *kwargs)
+            else:
+                return redirect('Proveedores:Base')
 
     def get_success_url(self):
         return reverse_lazy('Proveedores:Base') + '?created'
@@ -54,38 +64,47 @@ class UpdateView(UpdateView):
         if self.request.user.is_authenticated == False:
             return redirect('login')
         else:
-            return super().dispatch(request, *args, *kwargs)
+            if consultar_PermisoUsuario(request, 'proveedores.change_proveedores'):
+                return super().dispatch(request, *args, *kwargs)
+            else:
+                return redirect('Proveedores:Base')
 
     def get_success_url(self):
         return reverse_lazy('Proveedores:Edit', args=[self.object.id]) + '?updated'
 
 def Search(request):
-    filtroNombre = request.GET.get('nombre', '')
-    filtroIdentificacion = request.GET.get('identificacion', '')
+    if request.user.is_authenticated:
+        if consultar_PermisoUsuario(request, 'proveedores.view_proveedores'):
+            filtroNombre = request.GET.get('nombre', '')
+            filtroIdentificacion = request.GET.get('identificacion', '')
 
-    # trae los Proveedores relacionados
-    filtro_list = []
+            # trae los Proveedores relacionados
+            filtro_list = []
 
-    if filtroNombre != '' and filtroNombre != None:
-        filtro_list = Proveedores.objects.filter(nombre__icontains=filtroNombre)
-    elif filtroIdentificacion != '' and filtroIdentificacion != None:
-        filtro_list = Proveedores.objects.filter(identificacion__icontains=filtroIdentificacion)
+            if filtroNombre != '' and filtroNombre != None:
+                filtro_list = Proveedores.objects.filter(nombre__icontains=filtroNombre)
+            elif filtroIdentificacion != '' and filtroIdentificacion != None:
+                filtro_list = Proveedores.objects.filter(identificacion__icontains=filtroIdentificacion)
+            else:
+                return redirect(reverse_lazy('Proveedores:Base'))
+
+            page = request.GET.get('page', 1)
+            paginator = Paginator(filtro_list, 30)
+
+            try:
+                proveedores = paginator.page(page)
+            except PageNotAnInteger:
+                proveedores = paginator.page(1)
+            except EmptyPage:
+                proveedores = paginator.page(paginator.num_pages)
+
+            datos = {
+                'is_paginated':  True if paginator.num_pages > 1 else False,
+                'page_obj': proveedores,
+            }
+
+            return render(request, "proveedores/List.html", datos)
+        else:
+            return redirect('codeBackEnd:dashboard')
     else:
-        return redirect(reverse_lazy('Proveedores:Base'))
-
-    page = request.GET.get('page', 1)
-    paginator = Paginator(filtro_list, 30)
-
-    try:
-        proveedores = paginator.page(page)
-    except PageNotAnInteger:
-        proveedores = paginator.page(1)
-    except EmptyPage:
-        proveedores = paginator.page(paginator.num_pages)
-
-    datos = {
-        'is_paginated':  True if paginator.num_pages > 1 else False,
-        'page_obj': proveedores,
-    }
-
-    return render(request, "proveedores/List.html", datos)
+        return redirect('login')

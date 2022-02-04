@@ -1,24 +1,24 @@
 from django import forms
-from .models import Rol, Perfil, PermisosPorRol
+from .models import Perfil
 
 class BaseForm(forms.ModelForm):
     class Meta:
-        model = Rol
+        model = Perfil
         fields = [
-            'nombre',
+            'usuario',
         ]
 
         widgets = {
-            'nombre'        : forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nombre'}),
+            'usuario'        : forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nombre'}),
         }
 
 class FormEdit(forms.ModelForm):
     class Meta:
-        model = Rol
+        model = Perfil
         fields = [
-            'nombre',
+            'usuario',
         ]
 
         widgets = {
-            'nombre'        : forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nombre'}),
+            'usuario'        : forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nombre'}),
         }

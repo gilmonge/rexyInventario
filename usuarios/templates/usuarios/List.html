@@ -2,6 +2,7 @@
 {% load humanize %}
 {% load static %}
 {% load codeBackEnd_extras %}
+{% load usuarios_extras %}
 {% block title %}Usuarios{% endblock %}
 {% block tituloSeccion %}<img class="img-titulo" src="{% static 'codeBackEnd/admin/img/png/check-list.png' %}"> Usuarios{% endblock %}
 
@@ -16,7 +17,10 @@
 
 {% block content %}
     <div class="col-md-12 p-0">
-        <a href="{% url 'Usuarios:Add' %}" type="button" class="btn btn-light mb-3"><i class="fas fa-plus text-success"></i> Agregar usuarios</a>
+        {% get_PermisoUsuario request.user.id "auth.add_user" as Permiso %}
+        {% if Permiso %}
+            <a href="{% url 'Usuarios:Add' %}" type="button" class="btn btn-light mb-3"><i class="fas fa-plus text-success"></i> Agregar usuarios</a>
+        {% endif %}
         <button type="button" class="btn btn-light mb-3 ml-1" data-toggle="modal" data-target="#searchModal">
             <i class="fas fa-search text-info"></i> Buscar
         </button>
@@ -49,22 +53,36 @@
                     <tr>
                         <th style="text-align: center;">Nombre</th>
                         <th style="text-align: center;">Email</th>
-                        <th style="text-align: center;">
-                            <a href="#" title="Haga clic sobre el icono para editar la fila."><i class='fa fa-info text-white'></i></a>
-                        </th>
-                        {% comment %} <th style="text-align: center;">
-                            <a href="#" title="Haga clic sobre el icono para eliminar la fila."><i class='fa fa-info'></i></a>
-                        </th> {% endcomment %}
+                        {% get_PermisoUsuario request.user.id "auth.change_user" as Permiso %}
+                        {% if Permiso %}
+                            <th style="text-align: center;">
+                                <a href="#" title="Haga clic sobre el icono para editar la fila."><i class='fa fa-info text-white'></i></a>
+                            </th>
+                        {% endif %}
+                        {% get_PermisoUsuario request.user.id "auth.delete_user" as Permiso %}
+                        {% if Permiso %}
+                            <th style="text-align: center;">
+                                <a href="#" title="Haga clic sobre el icono para eliminar la fila."><i class='fa fa-info'></i></a>
+                            </th>
+                        {% endif %}
                     </tr>
                 </thead>
                 <tbody>
                     {% for linea in page_obj %}
-                        <tr>
-                            <td style="text-align: center;">{{linea.first_name}} {{linea.last_name}}</td>
-                            <td style="text-align: center;">{{linea.email}}</td>
-                            <td style="text-align: center;"><a href="{% url 'Usuarios:Edit' pk=linea.id %}" class="btn btn-primary"><i class="fas fa-pencil-alt fa-lg"></i> Editar</a></td>
-                            {% comment %} <td style="text-align: center;"><a href="{% url 'Categorias:Delete' pk=linea.id %}" class="btn btn-danger"><i class="far fa-trash-alt"></i> Borrar</a></td> {% endcomment %}
-                        </tr>
+                        {% if linea.is_superuser == False and linea.id != request.user.id %}
+                            <tr>
+                                <td style="text-align: center;">{{linea.first_name}} {{linea.last_name}}</td>
+                                <td style="text-align: center;">{{linea.email}}</td>
+                                {% get_PermisoUsuario request.user.id "auth.change_user" as Permiso %}
+                                {% if Permiso %}
+                                    <td style="text-align: center;"><a href="{% url 'Usuarios:Edit' pk=linea.id %}" class="btn btn-primary"><i class="fas fa-pencil-alt fa-lg"></i> Editar</a></td>
+                                {% endif %}
+                                {% get_PermisoUsuario request.user.id "auth.delete_user" as Permiso %}
+                                {% if Permiso %}
+                                    <td style="text-align: center;"><a href="{% url 'Usuarios:Delete' pk=linea.id %}" class="btn btn-danger"><i class="far fa-trash-alt"></i> Borrar</a></td>
+                                {% endif %}
+                            </tr>
+                        {% endif %}
                     {% endfor%}
                 </tbody>
             </table>
