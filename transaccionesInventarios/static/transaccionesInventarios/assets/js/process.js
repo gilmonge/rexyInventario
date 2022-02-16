@@ -22,6 +22,10 @@ $(document).ready(function () {
     $("#codProducto").focusout(function() {
         agregarInventarioListado()
     })
+
+    $("#emitirTransaccion").click(function() {
+        $("#seleccionProveedor").modal("show")
+    })
 });
 
 function agregarInventarioListado(){
@@ -273,6 +277,7 @@ function mostrarInformacionTransaccion(idTransaccion){
                 $("#informacion_transFecha").html(`${dia}-${mes}-${year} ${hour}:${min} ${tipoHora}`)
                 $("#informacion_transTipo").html((data.tipo)? "Entrada" : "Salida")
                 $("#informacion_bodNombre").html(data.bodega.nombre)
+                $("#informacion_transProveedor").html(data.proveedor.nombre)
                 $("#informacion_bodEncargado").html(data.bodega.responsable)
 
                 let lineas = ""

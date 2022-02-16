@@ -36,6 +36,6 @@ def NombreEmpresa():
 def to_int(value):
     if value is None:
         return int(1)
-    if value is '':
+    if value == '':
         return int(1)
     return int(value)

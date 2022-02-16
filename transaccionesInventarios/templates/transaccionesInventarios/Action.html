@@ -80,7 +80,7 @@
                     {% endif %}
                 </div>
                 <div class="text-center col-12 mb-2 order-1 text-sm-right order-sm-2 mb-sm-0 col-sm-6 p-sm-0">
-                    <button id="emitirTransaccion" type="submit" class="btn btn-light" style="display: none;">
+                    <button id="emitirTransaccion" type="button" class="btn btn-light" style="display: none;">
                         {% if accion == 1 %}
                             <i class="far fa-save"></i> Registrar entrada de inventario
                         {% else %}
@@ -95,6 +95,41 @@
         <input type="hidden" name="tipoTransaccion" value="{{accion}}" />
         <input type="hidden" name="idBodega" value="{{bodega.id}}" />
         <textarea id="listadoProductos" name="listadoProductos" style="width: 100%; height: 90px; display: none;">{"productos":[]}</textarea>
+
+        <div class="modal fade" id="seleccionProveedor" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="form-group col-md-12">
+                            <label for="id_proveedor">Proveedor del inventario del movimiento:</label>
+                            <select id="id_proveedor" name="proveedor" class="selectpicker w-100" required>
+                                {% for linea in proveedores %}
+                                    <option value="{{ linea.id }}">{{ linea.nombre }}</option> 
+                                {% endfor%}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="form-group col-md-12 pr-0">
+                            <div class="row col-md-12 pr-0">
+                                <div class="text-center col-12 order-2 text-sm-left order-sm-1 col-sm-6 p-sm-0">
+                                    <button type="button" class="btn btn-light" data-dismiss="modal"><i class="fas fa-chevron-left"></i> Cerrar</button>
+                                </div>
+                                <div class="text-center col-12 mb-2 order-1 text-sm-right order-sm-2 mb-sm-0 col-sm-6 p-sm-0">
+                                    <button type="submit" class="btn btn-light">
+                                        {% if accion == 1 %}
+                                            <i class="far fa-save"></i> Registrar entrada de inventario
+                                        {% else %}
+                                            <i class="far fa-save"></i> Registrar salida de inventario
+                                        {% endif %}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </form>
 
     <div class="modal fade" id="RemoveModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

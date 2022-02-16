@@ -8,6 +8,7 @@ class BaseForm(forms.ModelForm):
             'responsable',
             'tipo',
             'bodega',
+            'proveedor',
         ]
 
         widgets = {
@@ -21,4 +22,5 @@ class FormEdit(forms.ModelForm):
             'responsable',
             'tipo',
             'bodega',
+            'proveedor',
         ]

@@ -13,6 +13,7 @@ from bodegas.models import Bodegas
 from inventarios.models import Productos
 from inventarios import forms as formInventarios
 from usuarios.views import consultar_PermisoUsuario
+from proveedores.models import Proveedores
 
 # Create your views here.
 class baseListView(ListView):
@@ -49,8 +50,10 @@ def AddInventory(request, pk):
     if request.user.is_authenticated:
         if consultar_PermisoUsuario(request, 'transaccionesInventarios.add_transacciones'):
             bodega = Bodegas.objects.filter(id=pk)[0]
+            proveedores = Proveedores.objects.all()
             datos = {
                 'bodega':bodega,
+                'proveedores':proveedores,
                 'accion': 1,
                 'formInventario': formInventarios.BaseForm(),
             }
@@ -78,8 +81,10 @@ def DeduceInventory(request, pk):
     if request.user.is_authenticated:
         if consultar_PermisoUsuario(request, 'transaccionesInventarios.add_transacciones'):
             bodega = Bodegas.objects.filter(id=pk)[0]
+            proveedores = Proveedores.objects.all()
             datos = {
                 'bodega':bodega,
+                'proveedores':proveedores,
                 'accion': 0,
                 'formInventario': formInventarios.BaseForm(),
             }
@@ -167,11 +172,13 @@ def SaveTransaction(request):
                 listadoProductos = json.loads(request.POST['listadoProductos'])
 
                 bodega = Bodegas.objects.filter(id=request.POST['idBodega'])[0]
+                proveedor = Proveedores.objects.filter(id=request.POST['proveedor'])[0]
 
                 transaccion = Transacciones(
                     responsable= request.user,
                     tipo= request.POST['tipoTransaccion'], # 0: salida, 1: entrada
                     bodega= bodega,
+                    proveedor= proveedor,
                 )
                 transaccion.save()
 
@@ -237,6 +244,10 @@ def getTransaction(request):
                             'id': transaccion.bodega.id,
                             'nombre': transaccion.bodega.nombre,
                             'responsable': transaccion.bodega.responsable.first_name + ' ' + transaccion.bodega.responsable.last_name,
+                        },
+                        'proveedor': {
+                            'id': transaccion.proveedor.id,
+                            'nombre': transaccion.proveedor.nombre,
                         },
                         "lineas": lineasTransaccion,
                         "cantLineas": contador
