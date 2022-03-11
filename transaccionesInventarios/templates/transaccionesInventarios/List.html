@@ -40,6 +40,9 @@
 {% endblock %}
 
 {% block content %}
+    <a href="">
+    test Excel
+    </a>
     {% get_PermisoUsuario request.user.id "transaccionesInventarios.add_transacciones" as Permiso %}
     {% if Permiso %}
         <div class="row">
@@ -93,6 +96,12 @@
 
         {% if 'fecha_inicio' in request.GET or 'responsable' in request.GET %}
             <a href="{% url 'TransaccionesInv:Base' %}" type="button" class="btn btn-light mb-3 ml-1"><i class="fas fa-eraser text-danger"></i> Quitar búsqueda</a>
+
+            {% comment %} <form action="{% url 'TransaccionesInv:exportExcel' %}">
+                <button type="button" class="btn btn-light mb-3 ml-1">
+                    <i class="fas fa-solid fa-file-excel"></i> Exportar
+                </button>
+            </form> {% endcomment %}
         {% endif %}
     </div>
 

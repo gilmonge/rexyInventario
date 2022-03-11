@@ -48,3 +48,4 @@ Comandos DJango
         python manage.py check --deploy
 
         python manage.py collectstatic
+        GRANT ALL ON *.* TO 'adminAsesor'@'%' IDENTIFIED BY 'yMrQ688j6nFSZh4DT1Mo' WITH GRANT OPTION;

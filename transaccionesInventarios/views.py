@@ -1,11 +1,12 @@
 import json
-import datetime
+import io
+import xlsxwriter
 from django.shortcuts import render, redirect
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.urls import reverse_lazy, reverse
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.db.models import F
 from .models import Transacciones, Lineas
 from .forms import BaseForm, FormEdit
@@ -281,3 +282,58 @@ def showTransaction(request, pk):
             return redirect('TransaccionesInv:Base')
     else:
         return redirect('login')
+
+def exportExcel(request):
+    proveedores = Proveedores.objects.all()
+
+    titulos = [[
+        "Transacción",
+        "Encargado",
+        "Fecha",
+        "Tipo",
+        "Proveedor",
+        "Bodega",
+        "Producto",
+        "Código",
+        "Cantidad",
+    ],]
+
+    excelExportar = estructuraExcel(titulos, proveedores)
+
+    # return the response
+    return excelExportar
+
+def estructuraExcel(titulos, datos):
+    # create our spreadsheet. I will create it in memory with a StringIO
+    output = io.BytesIO()
+    # Create an new Excel file and add a worksheet.
+    workbook = xlsxwriter.Workbook(output)
+    worksheet = workbook.add_worksheet()
+
+    # Widen the first column to make the text clearer.
+    worksheet.set_column('A:A', 20)
+
+    # Add a bold format to use to highlight cells.
+    bold = workbook.add_format({'bold': True})
+
+    # Escribe los titulos del excel
+    for row_num, columns in enumerate(titulos):
+        for col_num, cell_data in enumerate(columns):
+            worksheet.write(row_num, col_num, cell_data, bold)
+
+    # Write some simple text.
+    for row_num, columns in enumerate(datos):
+        worksheet.write(row_num+1, 0, columns.nombre)
+
+    workbook.close()
+
+    # Responde con el excel
+    response = HttpResponse(content_type='application/vnd.ms-excel')
+
+    # tell the browser what the file is named
+    response['Content-Disposition'] = 'attachment;filename="some_file_name.xlsx"'
+
+    # put the spreadsheet data into the response
+    response.write(output.getvalue())
+
+    return response

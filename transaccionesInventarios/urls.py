@@ -12,4 +12,5 @@ transaccionesInv_patterns = ([
     path('save',            modelViews.SaveTransaction,         name='Save'),
     path('getTransaction',  modelViews.getTransaction,          name='getTransaction'),
     path('<int:pk>',        modelViews.showTransaction,         name="showTransaction"),
+    path('export',          modelViews.exportExcel,             name="exportExcel"),
 ], "TransaccionesInv")
