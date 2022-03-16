@@ -65,22 +65,22 @@
                                 </li>
                             {% endif %}
 
-                            {% get_PermisoUsuario request.user.id "categorias.view_categorias" as Permiso %}
-                            {% if Permiso %}
-                                <li class="nav-item">
-                                    <a href="{% url 'Categorias:Base' %}">
-                                        <img src="{% static 'codeBackEnd/admin/img/png/check-list.png' %}">
-                                        <p>Categorías</p>
-                                    </a>
-                                </li>
-                            {% endif %}
-
                             {% get_PermisoUsuario request.user.id "inventarios.view_productos" as Permiso %}
                             {% if Permiso %}
                                 <li class="nav-item">
                                     <a href="{% url 'Inventarios:Base' %}">
                                         <img src="{% static 'codeBackEnd/admin/img/png/box.png' %}">
                                         <p>Productos</p>
+                                    </a>
+                                </li>
+                            {% endif %}
+
+                            {% get_PermisoUsuario request.user.id "categorias.view_categorias" as Permiso %}
+                            {% if Permiso %}
+                                <li class="nav-item">
+                                    <a href="{% url 'Categorias:Base' %}">
+                                        <img src="{% static 'codeBackEnd/admin/img/png/check-list.png' %}">
+                                        <p>Categorías</p>
                                     </a>
                                 </li>
                             {% endif %}

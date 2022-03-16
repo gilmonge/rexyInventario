@@ -4,7 +4,7 @@ from django.db import models
 class Parametro(models.Model):
     parametro   = models.CharField(verbose_name="Identificador del parametro", max_length=100,)
     valor       = models.CharField(verbose_name="Valor del parametro", max_length=100,)
-    detalle     = models.CharField(verbose_name="Detalle del parametro", max_length=100, default="")
+    detalle     = models.CharField(verbose_name="Detalle del parametro", max_length=100)
 
     def __str__(self):
         return self.parametro

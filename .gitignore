@@ -156,3 +156,4 @@ dmypy.json
 dist/
 !codeBackEnd/static/codeBackEnd/admin/assets/formvalidation-v1.5.0/dist
 envPy
+*.zip

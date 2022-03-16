@@ -15,6 +15,7 @@ from inventarios.models import Productos
 from inventarios import forms as formInventarios
 from usuarios.views import consultar_PermisoUsuario
 from proveedores.models import Proveedores
+from datetime import datetime
 
 # Create your views here.
 class baseListView(ListView):
@@ -284,24 +285,105 @@ def showTransaction(request, pk):
         return redirect('login')
 
 def exportExcel(request):
-    proveedores = Proveedores.objects.all()
+    if request.user.is_authenticated:
+        if consultar_PermisoUsuario(request, 'transaccionesInventarios.view_transacciones'):
+            ''' Por fecha '''
+            fecha_inicio = request.GET.get('fecha_inicio', '')
+            fecha_fin = request.GET.get('fecha_fin', '')
+            transaccion_fecha = request.GET.get('transaccion_fecha', '')
 
-    titulos = [[
-        "Transacción",
-        "Encargado",
-        "Fecha",
-        "Tipo",
-        "Proveedor",
-        "Bodega",
-        "Producto",
-        "Código",
-        "Cantidad",
-    ],]
+            ''' Por responsable '''
+            responsable = request.GET.get('responsable', '')
+            transaccion_resp = request.GET.get('transaccion_resp', '')
 
-    excelExportar = estructuraExcel(titulos, proveedores)
+            # trae los Transacciones relacionados
+            filtro_list = []
 
-    # return the response
-    return excelExportar
+            if (fecha_inicio != '' and fecha_inicio != None) and (fecha_fin != '' and fecha_fin != None) and (transaccion_fecha != '' and transaccion_fecha != None):
+                ''' invertir fechas '''
+                fecha_inicio = fecha_inicio.split('-')
+                fecha_inicio = fecha_inicio[2] +'-'+ fecha_inicio[1] +'-'+ fecha_inicio[0]+' 00:00:00'
+                fecha_fin = fecha_fin.split('-')
+                fecha_fin = fecha_fin[2] +'-'+ fecha_fin[1] +'-'+ fecha_fin[0]+' 23:59:59'
+
+                if ( transaccion_fecha == "2"):
+                    filtro_list = Transacciones.objects.filter(
+                        fecha__gte=fecha_inicio, fecha__lte=fecha_fin,
+                        tipo=1,
+                    ).order_by("-fecha")
+                elif( transaccion_fecha == "3"):
+                    filtro_list = Transacciones.objects.filter(
+                        fecha__gte=fecha_inicio, fecha__lte=fecha_fin,
+                        tipo=0,
+                    ).order_by("-fecha")
+                else:
+                    filtro_list = Transacciones.objects.filter(fecha__gte=fecha_inicio, fecha__lte=fecha_fin).order_by("-fecha")
+            elif (responsable != '' and responsable != None) and (transaccion_resp != '' and transaccion_resp != None):
+                if ( transaccion_resp == "2"):
+                    filtro_list = Transacciones.objects.filter(
+                        responsable=responsable,
+                        tipo=1,
+                    ).order_by("-fecha")
+                elif( transaccion_resp == "3"):
+                    filtro_list = Transacciones.objects.filter(
+                        responsable=responsable,
+                        tipo=0,
+                    ).order_by("-fecha")
+                else:
+                    filtro_list = Transacciones.objects.filter(responsable=responsable).order_by("-fecha")
+            else:
+                filtro_list = Transacciones.objects.all().order_by("-fecha")
+
+            datosExcell = []
+
+            for transaccion in filtro_list:
+
+                tipoTransaccion = 'Salida'
+                if(transaccion.tipo):
+                    tipoTransaccion = 'Entrada'
+
+
+                linea = [[
+                    transaccion.id,
+                    transaccion.responsable.first_name+' '+transaccion.responsable.last_name,
+                    transaccion.fecha.strftime("%Y-%m-%d %H:%M:%S"),
+                    tipoTransaccion,
+                    "Proveedor",
+                    "Bodega",
+                    "Producto",
+                    "Código",
+                    "Cantidad",
+                ]]
+                # transaccion.responsable
+                # transaccion.fecha
+                # transaccion.tipo
+                # transaccion.bodega
+                # transaccion.proveedor
+                # print(transaccion)
+                # datosExcell.append(linea) 
+                datosExcell = datosExcell + linea
+
+            titulos = [[
+                "N. Transacción",
+                "Encargado",
+                "Fecha",
+                "Tipo",
+                "Proveedor",
+                "Bodega",
+                "Producto",
+                "Código",
+                "Cantidad",
+            ],]
+
+            excelExportar = estructuraExcel(titulos, datosExcell)
+
+            # return the response
+            return excelExportar
+        else:
+            return redirect('codeBackEnd:dashboard')
+
+    else:
+        return redirect('login')
 
 def estructuraExcel(titulos, datos):
     # create our spreadsheet. I will create it in memory with a StringIO
@@ -323,7 +405,8 @@ def estructuraExcel(titulos, datos):
 
     # Write some simple text.
     for row_num, columns in enumerate(datos):
-        worksheet.write(row_num+1, 0, columns.nombre)
+        for col_num, cell_data in enumerate(columns):
+            worksheet.write(row_num+1, col_num, cell_data)
 
     workbook.close()
 
