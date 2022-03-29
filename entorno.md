@@ -3,6 +3,7 @@
 Si ya se tiene configurado el entorno se debe ejecutar lo siguiente
 ```ssh
 ..\envPy\Scripts\activate
+source ../envPyUbuntu/bin/activate
 ```
 Se debe ejecutar según la ubicación del proyecto
 
@@ -18,9 +19,9 @@ Configuración entorno virtual
     py -m venv envPy
     ```
  2. Activación
-    ```ssh
-    .\envPy\Scripts\activate
-    ```
+   ```ssh
+   ..\envPy\Scripts\activate
+   ```
  3. Instalar requisitos
     ```ssh
     pip install -r requisitos.txt
