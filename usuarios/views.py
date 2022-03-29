@@ -5,6 +5,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.urls import reverse_lazy, reverse
 from django.contrib.auth.models import User
 from .forms import BaseForm, FormEdit
+from codeBackEnd.funciones import estructuraExcel
 
 # Create your views here.
 class baseListView(ListView):
@@ -194,3 +195,53 @@ def consultar_PermisoUsuario(request, permiso):
             tienePermiso = True
 
     return tienePermiso
+
+def exportExcel(request):
+    if request.user.is_authenticated:
+        if consultar_PermisoUsuario(request, 'transaccionesInventarios.view_transacciones'):
+            filtroTipoFiltro = request.GET.get('tipoFiltro', '')
+            filtroNombre = request.GET.get('nombre', '')
+            filtroEmail = request.GET.get('email', '')
+
+            # trae los User relacionados
+            filtro_list = []
+
+            if (filtroTipoFiltro != '' and filtroTipoFiltro != None) and (filtroNombre != '' and filtroNombre != None):
+                if filtroTipoFiltro == "1":
+                    filtro_list = User.objects.filter(first_name__icontains=filtroNombre)
+                elif filtroTipoFiltro == "2":
+                    filtro_list = User.objects.filter(last_name__icontains=filtroNombre)
+            elif filtroEmail != '' and filtroEmail != None:
+                filtro_list = User.objects.filter(email__icontains=filtroEmail)
+            else:
+                filtro_list = User.objects.all()
+
+            datosExcel = []
+
+            for usuario in filtro_list:
+                linea = [[
+                    usuario.id,
+                    usuario.first_name,
+                    usuario.last_name,
+                    usuario.username,
+                    usuario.email,
+                ]]
+                datosExcel = datosExcel + linea
+
+            titulos = [[
+                "N. Usuario",
+                "Nombre",
+                "Apellidos",
+                "Usuario",
+                "Correo electrónico",
+            ],]
+
+            excelExportar = estructuraExcel(titulos, datosExcel, 'usuarios')
+
+            # return the response
+            return excelExportar
+        else:
+            return redirect('codeBackEnd:dashboard')
+
+    else:
+        return redirect('login')
