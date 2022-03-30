@@ -6,6 +6,7 @@ from django.urls import reverse_lazy, reverse
 from .models import Categorias
 from .forms import BaseForm, FormEdit
 from usuarios.views import consultar_PermisoUsuario
+from codeBackEnd.funciones import estructuraExcel
 
 # Create your views here.
 class baseListView(ListView):
@@ -103,5 +104,43 @@ def Search(request):
             return render(request, "categorias/List.html", datos)
         else:
             return redirect('codeBackEnd:dashboard')
+    else:
+        return redirect('login')
+
+def exportExcel(request):
+    if request.user.is_authenticated:
+        if consultar_PermisoUsuario(request, 'transaccionesInventarios.view_transacciones'):
+            filtroNombre = request.GET.get('nombre', '')
+
+            # trae los Transacciones relacionados
+            filtro_list = []
+
+            if filtroNombre != '' and filtroNombre != None:
+                filtro_list = Categorias.objects.filter(nombre__icontains=filtroNombre)
+            else:
+                filtro_list = Categorias.objects.all()
+
+            datosExcel = []
+
+            for bodega in filtro_list:
+
+                linea = [[
+                    bodega.id,
+                    bodega.nombre,
+                ]]
+                datosExcel = datosExcel + linea
+
+            titulos = [[
+                "N. Categoría",
+                "Nombre",
+            ],]
+
+            excelExportar = estructuraExcel(titulos, datosExcel, 'categorias')
+
+            # return the response
+            return excelExportar
+        else:
+            return redirect('codeBackEnd:dashboard')
+
     else:
         return redirect('login')
