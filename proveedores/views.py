@@ -6,6 +6,7 @@ from django.urls import reverse_lazy, reverse
 from .models import Proveedores
 from .forms import BaseForm, FormEdit
 from usuarios.views import consultar_PermisoUsuario
+from codeBackEnd.funciones import estructuraExcel
 
 # Create your views here.
 class baseListView(ListView):
@@ -106,5 +107,58 @@ def Search(request):
             return render(request, "proveedores/List.html", datos)
         else:
             return redirect('codeBackEnd:dashboard')
+    else:
+        return redirect('login')
+
+def exportExcel(request):
+    if request.user.is_authenticated:
+        if consultar_PermisoUsuario(request, 'transaccionesInventarios.view_transacciones'):
+            filtroNombre = request.GET.get('nombre', '')
+            filtroIdentificacion = request.GET.get('identificacion', '')
+
+            # trae los Transacciones relacionados
+            filtro_list = []
+
+            if filtroNombre != '' and filtroNombre != None:
+                filtro_list = Proveedores.objects.filter(nombre__icontains=filtroNombre)
+            elif filtroIdentificacion != '' and filtroIdentificacion != None:
+                filtro_list = Proveedores.objects.filter(identificacion__icontains=filtroIdentificacion)
+            else:
+                filtro_list = Proveedores.objects.all()
+
+            datosExcel = []
+
+            for proveedor in filtro_list:
+
+                linea = [[
+                    proveedor.id,
+                    proveedor.nombre,
+                    proveedor.identificacion,
+                    proveedor.email,
+                    proveedor.direccion,
+                    proveedor.contacto,
+                    proveedor.telefono,
+                    proveedor.observacion,
+                ]]
+                datosExcel = datosExcel + linea
+
+            titulos = [[
+                "N. Proveedor",
+                "Nombre",
+                "Identificación",
+                "Correo Electrónico",
+                "Dirección",
+                "Contacto",
+                "Teléfono",
+                "Observación",
+            ],]
+
+            excelExportar = estructuraExcel(titulos, datosExcel, 'proveedores')
+
+            # return the response
+            return excelExportar
+        else:
+            return redirect('codeBackEnd:dashboard')
+
     else:
         return redirect('login')

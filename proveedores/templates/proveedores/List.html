@@ -18,15 +18,47 @@
 {% block content %}
     <div class="col-md-12 p-0">
         {% get_PermisoUsuario request.user.id "proveedores.add_proveedores" as Permiso %}
-        {% if Permiso %}
-            <a href="{% url 'Proveedores:Add' %}" type="button" class="btn btn-light mb-3"><i class="fas fa-plus text-success"></i> Agregar proveedor</a>
-        {% endif %}
-        <button type="button" class="btn btn-light mb-3 ml-1" data-toggle="modal" data-target="#searchModal">
-            <i class="fas fa-search text-info"></i> Buscar
-        </button>
+        
+        {% if 'nombre' not in request.GET and 'identificacion'  not in request.GET %}
+            <form action="{% url 'Proveedores:exportExcel' %}">
+                {% if Permiso %}
+                    <a href="{% url 'Proveedores:Add' %}" type="button" class="btn btn-light mb-3"><i class="fas fa-plus text-success"></i> Agregar proveedor</a>
+                {% endif %}
 
+                <button type="button" class="btn btn-light mb-3 ml-1" data-toggle="modal" data-target="#searchModal">
+                    <i class="fas fa-search text-info"></i> Buscar
+                </button>
+
+                <button type="submit" class="btn btn-light mb-3 ml-1 text-green">
+                    <i class="fas fa-solid fa-file-excel color-excel"></i> Exportar Excel
+                </button>
+            </form>
+        {% endif %}
+        
         {% if 'nombre' in request.GET or 'identificacion' in request.GET %}
-            <a href="{% url 'Proveedores:Base' %}" type="button" class="btn btn-light mb-3 ml-1"><i class="fas fa-eraser text-danger"></i> Quitar búsqueda</a>
+            <form action="{% url 'Proveedores:exportExcel' %}">
+                {% if Permiso %}
+                    <a href="{% url 'Proveedores:Add' %}" type="button" class="btn btn-light mb-3"><i class="fas fa-plus text-success"></i> Agregar proveedor</a>
+                {% endif %}
+
+                <button type="button" class="btn btn-light mb-3 ml-1" data-toggle="modal" data-target="#searchModal">
+                    <i class="fas fa-search text-info"></i> Buscar
+                </button>
+
+                <a href="{% url 'Proveedores:Base' %}" type="button" class="btn btn-light mb-3 ml-1"><i class="fas fa-eraser text-danger"></i> Quitar búsqueda</a>
+
+                {% if 'nombre' in request.GET %}
+                    <input type="hidden" name="nombre" value="{{request.GET.nombre}}">
+                {% endif %}
+
+                {% if 'identificacion' in request.GET %}
+                    <input type="hidden" name="identificacion" value="{{request.GET.identificacion}}">
+                {% endif %}
+
+                <button type="submit" class="btn btn-light mb-3 ml-1">
+                    <i class="fas fa-solid fa-file-excel color-excel"></i> Exportar Excel
+                </button>
+            </form>
         {% endif %}
     </div>
 
