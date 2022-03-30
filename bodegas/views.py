@@ -6,6 +6,7 @@ from django.urls import reverse_lazy, reverse
 from .models import Bodegas
 from .forms import BaseForm, FormEdit
 from usuarios.views import consultar_PermisoUsuario
+from codeBackEnd.funciones import estructuraExcel
 
 # Create your views here.
 class baseListView(ListView):
@@ -107,5 +108,50 @@ def Search(request):
             return render(request, "bodegas/List.html", datos)
         else:
             return redirect('codeBackEnd:dashboard')
+    else:
+        return redirect('login')
+
+def exportExcel(request):
+    if request.user.is_authenticated:
+        if consultar_PermisoUsuario(request, 'transaccionesInventarios.view_transacciones'):
+            filtroNombre = request.GET.get('nombre', '')
+            filtroResponsable = request.GET.get('responsable', '')
+
+            # trae los Bodegas relacionados
+            filtro_list = []
+
+            if filtroNombre != '' and filtroNombre != None:
+                filtro_list = Bodegas.objects.filter(nombre__icontains=filtroNombre)
+            elif filtroResponsable != '' and filtroResponsable != None:
+                filtro_list = Bodegas.objects.filter(responsable=filtroResponsable)
+            else:
+                filtro_list = Bodegas.objects.all()
+
+            datosExcel = []
+
+            for bodega in filtro_list:
+
+                linea = [[
+                    bodega.id,
+                    bodega.nombre,
+                    bodega.responsable.first_name+' '+bodega.responsable.last_name,
+                    bodega.observacion,
+                ]]
+                datosExcel = datosExcel + linea
+
+            titulos = [[
+                "N. Bodegas",
+                "Nombre",
+                "Responsable",
+                "Observacion",
+            ],]
+
+            excelExportar = estructuraExcel(titulos, datosExcel, 'bodegas')
+
+            # return the response
+            return excelExportar
+        else:
+            return redirect('codeBackEnd:dashboard')
+
     else:
         return redirect('login')
