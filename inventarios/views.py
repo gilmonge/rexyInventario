@@ -1,3 +1,4 @@
+import json
 from django.shortcuts import render, redirect
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -7,7 +8,8 @@ from django.http import JsonResponse
 from .models import Productos
 from .forms import BaseForm, FormEdit
 from usuarios.views import consultar_PermisoUsuario
-import json
+from codeBackEnd.funciones import estructuraExcel
+from categorias.models import Categorias
 
 # Create your views here.
 class baseListView(ListView):
@@ -145,7 +147,6 @@ def GetProduct(request):
 def AddProduct(request):
     if request.user.is_authenticated:
         if request.method == 'POST':
-            categorias = request.POST.getlist('categoria[]')
             datosInventario = {
                 'descripcion':request.POST['descripcion'],
                 'categoria':request.POST.getlist('categoria[]'),
@@ -164,3 +165,62 @@ def AddProduct(request):
             return JsonResponse({ "error": True, "msj": "Method not allowed" })
     else:
         return JsonResponse({ "error": True, "msj": "No authenticated" })
+
+def exportExcel(request):
+    if request.user.is_authenticated:
+        if consultar_PermisoUsuario(request, 'transaccionesInventarios.view_transacciones'):
+            filtroNombre = request.GET.get('nombre', '')
+            filtroCodigo = request.GET.get('codigoProduto', '')
+            filtroCategoria = request.GET.get('categoria', '')
+
+            # trae los Transacciones relacionados
+            filtro_list = []
+
+            if filtroNombre != '' and filtroNombre != None:
+                filtro_list = Productos.objects.filter(nombre__icontains=filtroNombre)
+            elif filtroCodigo != '' and filtroCodigo != None:
+                filtro_list = Productos.objects.filter(codigoProduto__icontains=filtroCodigo)
+            elif filtroCategoria != '' and filtroCategoria != None:
+                filtro_list = Productos.objects.filter(categoria__id=filtroCategoria)
+            else:
+                filtro_list = Productos.objects.all()
+
+            datosExcel = []
+
+            for producto in filtro_list:
+
+                listaCategorias = ""
+                for categoria in producto.categoria.all():
+                    if listaCategorias == "":
+                        listaCategorias = categoria.nombre
+                    else:
+                        listaCategorias = listaCategorias +", "+ categoria.nombre
+
+                linea = [[
+                    producto.id,
+                    producto.nombre,
+                    producto.cantidad,
+                    producto.codigoProduto,
+                    producto.descripcion,
+                    listaCategorias,
+                ]]
+                datosExcel = datosExcel + linea
+
+            titulos = [[
+                "N. Inventario",
+                "Nombre",
+                "Cantidad",
+                "Codigo del Produto",
+                "Descripción",
+                "Categoría",
+            ],]
+
+            excelExportar = estructuraExcel(titulos, datosExcel, 'transacciones')
+
+            # return the response
+            return excelExportar
+        else:
+            return redirect('codeBackEnd:dashboard')
+
+    else:
+        return redirect('login')

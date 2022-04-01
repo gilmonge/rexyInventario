@@ -10,4 +10,5 @@ inventarios_patterns = ([
     path('search',          modelViews.Search,                name='Search'),
     path('getProduct',      modelViews.GetProduct,            name='GetProductAjax'),
     path('addProduct',      modelViews.AddProduct,            name='AddProductAjax'),
+    path('export',          modelViews.exportExcel,           name="exportExcel"),
 ], "Inventarios")
